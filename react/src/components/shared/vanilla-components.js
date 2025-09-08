@@ -2,8 +2,8 @@
 
 export function Logo(size = 40, className = "") {
   return `
-    <div class="logo ${className}" style="width: ${size}px; height: ${size}px;">
-      <img src="/chat-4-svgrepo-com.svg" alt="Chat Logo" style="width: 100%; height: 100%;" />
+    <div class="logo ${className}" style="width: ${size}px; height: ${size}px; border-radius: 50%; overflow: hidden;">
+      <img src="/LOGO.svg" alt="Chat Logo" style="width: 100%; height: 100%; object-fit: cover;" />
     </div>
   `;
 }

@@ -7,6 +7,7 @@ import { handleSearch, handleTabSwitch, handleChatSelect, handleSendMessage } fr
 import { handleAttachment, handleCamera } from "./services/fileService.js";
 import { showEmojiPicker } from "./components/ui/EmojiPicker.js";
 import { showKebabMenu } from "./components/ui/KebabMenu.js";
+import { showContactView } from "./components/ui/ContactView.js";
 
 // Initialize state
 state.setFilteredUsers([...users]);
@@ -21,7 +22,7 @@ document.querySelector("#app").innerHTML = `
   <div class="sidebar">
     <div class="sidebar-header">
       ${Logo(44, "header-logo")}
-      <span class="app-name">ourschat</span>
+      <span class="app-name pingme-text">Ping<span class="accent">Me</span></span>
     </div>
     <div class="search-container">
       ${Input("text", "Search chats...", "searchInput", "search-input")}
