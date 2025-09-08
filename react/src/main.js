@@ -1,109 +1,22 @@
-import "./style.scss";
-import { users, messages } from "../utils/data.js";
-import { Logo, Button, Card, Input } from "./components/vanilla-components.js";
+import "./styles/main.scss";
+import { users } from "./utils/data.js";
+import { Logo, Button, Input } from "./components/shared/vanilla-components.js";
+import { state } from "./utils/stateManager.js";
+import { ChatList } from "./components/chat/ChatList.js";
+import { handleSearch, handleTabSwitch, handleChatSelect, handleSendMessage } from "./utils/eventHandlers.js";
+import { handleAttachment, handleCamera } from "./services/fileService.js";
+import { showEmojiPicker } from "./components/ui/EmojiPicker.js";
+import { showKebabMenu } from "./components/ui/KebabMenu.js";
 
-let currentChatId = null;
-let filteredUsers = [...users];
+// Initialize state
+state.setFilteredUsers([...users]);
 
 function renderChatList() {
   const chatList = document.querySelector(".chat-list");
-  chatList.innerHTML = filteredUsers
-    .map(
-      (user) => `
-    <div class="chat-item" data-user-id="${user.id}">
-      <div class="avatar">
-        <img src="${user.image}" alt="${
-        user.name
-      }" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-        <span class="avatar-fallback">${user.avatar}</span>
-      </div>
-      <div class="chat-info">
-        <div class="name">${user.name}</div>
-        <div class="last-message">${
-          messages[user.id]
-            ? messages[user.id][messages[user.id].length - 1].text
-            : "No messages"
-        }</div>
-      </div>
-      <div class="status ${user.online ? "" : "offline"}"></div>
-    </div>
-  `
-    )
-    .join("");
+  chatList.innerHTML = ChatList(state.filteredUsers);
 }
 
-function searchUsers(query) {
-  filteredUsers = users.filter((user) =>
-    user.name.toLowerCase().includes(query.toLowerCase())
-  );
-  renderChatList();
-}
-
-function renderMessages(userId) {
-  const messagesContainer = document.querySelector(".messages-container");
-  const userMessages = messages[userId] || [];
-
-  if (userMessages.length === 0) {
-    messagesContainer.innerHTML = '<div class="no-chat">No messages yet</div>';
-    return;
-  }
-
-  messagesContainer.innerHTML = userMessages
-    .map(
-      (msg) => `
-    <div class="message ${msg.isMe ? "sent" : "received"}">
-      <div class="message-bubble">
-        <div class="message-text">${msg.text}</div>
-        <div class="message-time">${msg.time}</div>
-      </div>
-    </div>
-  `
-    )
-    .join("");
-
-  messagesContainer.scrollTop = messagesContainer.scrollHeight;
-}
-
-function updateChatHeader(user) {
-  const chatName = document.querySelector("#chatName");
-  const chatStatus = document.querySelector("#chatStatus");
-  const chatAvatar = document.querySelector("#chatAvatar");
-
-  chatName.textContent = user.name;
-  chatStatus.textContent = user.lastSeen;
-  chatAvatar.innerHTML = `
-    <img src="${user.image}" alt="${user.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-    <span class="avatar-fallback">${user.avatar}</span>
-  `;
-}
-
-function sendMessage() {
-  const input = document.querySelector("#messageInput");
-  const text = input.value.trim();
-
-  if (!text || !currentChatId) return;
-
-  if (!messages[currentChatId]) {
-    messages[currentChatId] = [];
-  }
-
-  const now = new Date();
-  const time =
-    now.getHours().toString().padStart(2, "0") +
-    ":" +
-    now.getMinutes().toString().padStart(2, "0");
-
-  messages[currentChatId].push({
-    text,
-    time,
-    isMe: true,
-  });
-
-  input.value = "";
-  renderMessages(currentChatId);
-  renderChatList();
-}
-
+// Render main app
 document.querySelector("#app").innerHTML = `
   <div class="sidebar">
     <div class="sidebar-header">
@@ -123,17 +36,20 @@ document.querySelector("#app").innerHTML = `
   
   <div class="chat-area">
     <div class="chat-header">
-      <div class="contact-info">
-        <div class="avatar" id="chatAvatar"></div>
-        <div class="contact-details">
-          <h3 id="chatName">Select a chat</h3>
-          <span id="chatStatus">Click on a contact to start messaging</span>
+      <div class="header-left">
+        <button class="back-btn" id="backBtn">←</button>
+        <div class="contact-info">
+          <div class="avatar" id="chatAvatar"></div>
+          <div class="contact-details">
+            <h3 id="chatName">Select a chat</h3>
+            <span id="chatStatus">Click on a contact to start messaging</span>
+          </div>
         </div>
       </div>
       <div class="chat-actions">
-        ${Button("📞", "secondary", "small", "action-btn")}
-        ${Button("📹", "secondary", "small", "action-btn")}
-        ${Button("⋮", "secondary", "small", "action-btn")}
+        ${Button("📞", "secondary", "small", "action-btn", "callBtn")}
+        ${Button("📹", "secondary", "small", "action-btn", "videoBtn")}
+        ${Button("⋮", "secondary", "small", "action-btn", "kebabBtn")}
       </div>
     </div>
     
@@ -142,59 +58,104 @@ document.querySelector("#app").innerHTML = `
     </div>
     
     <div class="message-input">
-      ${Input("text", "Type a message", "messageInput")}
-      ${Button("Send", "primary", "medium", "", "sendButton")}
+      <div class="input-container">
+        <button class="action-btn emoji-btn" id="emojiBtn">😊</button>
+        ${Input("text", "Type a message", "messageInput")}
+        <button class="action-btn attach-btn" id="attachBtn">📎</button>
+        <button class="action-btn camera-btn" id="cameraBtn">📷</button>
+      </div>
+      <button class="send-btn" id="sendButton">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+        </svg>
+      </button>
     </div>
   </div>
 `;
 
 renderChatList();
 
-// Search functionality
+// Event listeners
 document.querySelector("#searchInput").addEventListener("input", (e) => {
-  searchUsers(e.target.value);
+  handleSearch(e.target.value);
 });
 
-// Navigation tabs
 document.querySelectorAll(".nav-tab").forEach((tab) => {
   tab.addEventListener("click", (e) => {
-    document
-      .querySelectorAll(".nav-tab")
-      .forEach((t) => t.classList.remove("active"));
+    document.querySelectorAll(".nav-tab").forEach((t) => t.classList.remove("active"));
     e.target.classList.add("active");
-
-    const tabType = e.target.dataset.tab;
-    if (tabType === "all") {
-      filteredUsers = [...users];
-    } else if (tabType === "online") {
-      filteredUsers = users.filter((user) => user.online);
-    } else if (tabType === "groups") {
-      filteredUsers = []; 
-    }
-    renderChatList();
+    handleTabSwitch(e.target.dataset.tab);
   });
 });
 
 document.addEventListener("click", (e) => {
   const chatItem = e.target.closest(".chat-item");
   if (chatItem) {
-    document
-      .querySelectorAll(".chat-item")
-      .forEach((item) => item.classList.remove("active"));
+    document.querySelectorAll(".chat-item").forEach((item) => item.classList.remove("active"));
     chatItem.classList.add("active");
-
-    const userId = parseInt(chatItem.dataset.userId);
-    currentChatId = userId;
-
-    const user = users.find((u) => u.id === userId);
-    updateChatHeader(user);
-    renderMessages(userId);
+    handleChatSelect(parseInt(chatItem.dataset.userId));
+    
+    // Mobile: Show chat area
+    if (window.innerWidth <= 768) {
+      document.querySelector("#app").classList.add("chat-open");
+    }
   }
 });
 
-document.querySelector("#sendButton").addEventListener("click", sendMessage);
+document.querySelector("#sendButton").addEventListener("click", handleSendMessage);
 document.querySelector("#messageInput").addEventListener("keypress", (e) => {
-  if (e.key === "Enter") {
-    sendMessage();
+  if (e.key === "Enter") handleSendMessage();
+});
+
+// New button event listeners
+document.querySelector("#attachBtn").addEventListener("click", handleAttachment);
+document.querySelector("#cameraBtn").addEventListener("click", handleCamera);
+document.querySelector("#emojiBtn").addEventListener("click", showEmojiPicker);
+document.querySelector("#kebabBtn").addEventListener("click", showKebabMenu);
+
+// Mobile back button
+document.querySelector("#backBtn").addEventListener("click", () => {
+  document.querySelector("#app").classList.remove("chat-open");
+});
+
+// Mobile keyboard handling
+const messageInput = document.querySelector("#messageInput");
+let initialViewportHeight = window.innerHeight;
+
+messageInput.addEventListener("focus", () => {
+  if (window.innerWidth <= 768) {
+    document.body.classList.add("keyboard-open");
+    // Add visual keyboard simulation for dev tools
+    if (!document.querySelector('.dev-keyboard')) {
+      const devKeyboard = document.createElement('div');
+      devKeyboard.className = 'dev-keyboard';
+      devKeyboard.innerHTML = 'Virtual Keyboard (Dev Tools)';
+      document.body.appendChild(devKeyboard);
+    }
+    // Scroll to input when keyboard opens
+    setTimeout(() => {
+      messageInput.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 300);
+  }
+});
+
+messageInput.addEventListener("blur", () => {
+  if (window.innerWidth <= 768) {
+    document.body.classList.remove("keyboard-open");
+    // Remove visual keyboard simulation
+    const devKeyboard = document.querySelector('.dev-keyboard');
+    if (devKeyboard) devKeyboard.remove();
+  }
+});
+
+// Handle viewport changes for keyboard
+window.addEventListener("resize", () => {
+  if (window.innerWidth <= 768) {
+    const currentHeight = window.innerHeight;
+    if (currentHeight < initialViewportHeight * 0.75) {
+      document.body.classList.add("keyboard-open");
+    } else {
+      document.body.classList.remove("keyboard-open");
+    }
   }
 });

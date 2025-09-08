@@ -169,3 +169,63 @@ export const messages = {
     { text: "Should be ready in about 20 minutes", time: "13:13", isMe: true }
   ]
 };
+
+export const groups = [
+  {
+    id: 101,
+    name: "Team Alpha",
+    avatar: "TA",
+    image: "",
+    online: true,
+    lastSeen: "5 members",
+    isGroup: true
+  },
+  {
+    id: 102,
+    name: "Project Beta",
+    avatar: "PB",
+    image: "",
+    online: true,
+    lastSeen: "8 members",
+    isGroup: true
+  },
+  {
+    id: 103,
+    name: "Design Squad",
+    avatar: "DS",
+    image: "",
+    online: true,
+    lastSeen: "12 members",
+    isGroup: true
+  },
+  {
+    id: 104,
+    name: "Dev Team",
+    avatar: "DT",
+    image: "",
+    online: true,
+    lastSeen: "6 members",
+    isGroup: true
+  }
+];
+
+export const groupMessages = {
+  101: [
+    { text: "Morning everyone! Ready for the sprint?", time: "9:00", isMe: false, sender: "Alice" },
+    { text: "Let's do this! 🚀", time: "9:01", isMe: true },
+    { text: "I'll share the updated requirements", time: "9:02", isMe: false, sender: "Bob" }
+  ],
+  102: [
+    { text: "Beta testing results are in", time: "14:30", isMe: false, sender: "Carol" },
+    { text: "Great! How did we do?", time: "14:31", isMe: true },
+    { text: "95% success rate! 🎉", time: "14:32", isMe: false, sender: "Carol" }
+  ],
+  103: [
+    { text: "New mockups are ready for review", time: "11:15", isMe: false, sender: "Emma" },
+    { text: "Looking good! Love the color scheme", time: "11:16", isMe: true }
+  ],
+  104: [
+    { text: "Code review at 3 PM today", time: "10:45", isMe: false, sender: "David" },
+    { text: "I'll be there", time: "10:46", isMe: true }
+  ]
+};

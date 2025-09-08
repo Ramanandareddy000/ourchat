@@ -1,4 +1,4 @@
-// Vanilla JS versions of reusable components
+//reusable components
 
 export function Logo(size = 40, className = "") {
   return `
@@ -26,6 +26,6 @@ export function Card(content, padding = "medium", className = "") {
 
 export function Input(type = "text", placeholder = "", id = "", className = "") {
   return `
-    <input type="${type}" placeholder="${placeholder}" class="input ${className}" ${id ? `id="${id}"` : ""} />
+    <input type="${type}" placeholder="${placeholder}" class="input ${className}" ${id ? `id="${id}"` : ""} autocomplete="off" />
   `;
 }
