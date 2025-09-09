@@ -1,8 +1,39 @@
-// Base styles
-@use 'base/reset';
+// @use rules must come first
+@use '../components/Sidebar/Sidebar.scss';
+@use '../components/Header/Header.scss';
+@use '../components/SearchBar/SearchBar.scss';
+@use '../components/TabNavigation/TabNavigation.scss';
+@use '../components/ChatList/ChatList.scss';
 
-// Component styles
-@use 'components/components';
-@use 'components/sidebar';
-@use 'components/chat-list';
-@use 'components/chat-area';
+@use '../components/ChatArea/ChatArea.scss';
+@use '../components/ChatHeader/ChatHeader.scss';
+@use '../components/MessageList/MessageList.scss';
+@use '../components/MessageBubble/MessageBubble.scss';
+@use '../components/MessageInput/MessageInput.scss';
+
+@use '../components/Avatar/Avatar.scss';
+
+@use '../Modules/ChatUI/ChatUIScreen.scss';
+
+// Google Fonts import
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+// Base styles
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #f8f9fa;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#root {
+  display: flex;
+  height: 100vh;
+  background: #ffffff;
+}
