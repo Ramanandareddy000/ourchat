@@ -1,0 +1,23 @@
+[33mcommit 8754f9e8231de0c86a766f29036d2bf17544916f[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Ramanandareddy <ramanandareddy_a@srmap.edu.in>
+Date:   Mon Sep 8 21:45:38 2025 +0530
+
+    Add ContactView component, update UI components and styling
+
+[33mcommit dbbb9ccd1722c584bd7c826adce447369e7e3110[m
+Author: Ramanandareddy000 <ramananda.reddy@quanteon.co>
+Date:   Mon Sep 8 15:11:06 2025 +0530
+
+    Update chat application structure and components
+
+[33mcommit 8d8f630239a8bd781d56ab9a97844cb932040e30[m
+Author: Ramanandareddy000 <ramananda.reddy@quanteon.co>
+Date:   Thu Sep 4 23:09:24 2025 +0530
+
+    Add screenshot to README
+
+[33mcommit 460824c79827f3c7aed6da4368ab9b59dfbd762b[m
+Author: Ramanandareddy000 <ramananda.reddy@quanteon.co>
+Date:   Thu Sep 4 22:43:26 2025 +0530
+
+    Initial commit
