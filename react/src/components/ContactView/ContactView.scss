@@ -1,0 +1,125 @@
+.contact-view {
+  background: #ffffff;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .contact-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+
+    .back-btn, .edit-btn {
+      background: none;
+      border: none;
+      color: #212529;
+      font-size: 16px;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 4px;
+
+      &:hover {
+        background: #e9ecef;
+      }
+    }
+
+    span {
+      color: #212529;
+      font-weight: 500;
+    }
+  }
+
+.contact-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center horizontally */
+  justify-content: center; /* Optional: center vertically */
+  text-align: center;
+  padding: 32px 16px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+
+  .avatar {
+    div {
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  h2 {
+    margin: 16px 0 8px;
+    font-size: 24px;
+    color: #212529;
+  }
+
+  p {
+    color: #6c757d;
+    margin: 0;
+  }
+}
+
+
+  .contact-actions {
+    padding: 16px 0;
+    border-bottom: 1px solid #e9ecef;
+
+    .action-row {
+      display: flex;
+      align-items: center;
+      padding: 12px 20px;
+      cursor: pointer;
+
+      &:hover {
+        background: #f8f9fa;
+      }
+
+      .icon {
+        margin-right: 16px;
+        font-size: 20px;
+      }
+
+      span:last-child {
+        color: #212529;
+      }
+    }
+  }
+
+  .contact-info, .contact-options, .danger-zone {
+    padding: 16px 0;
+    border-bottom: 1px solid #e9ecef;
+
+    .info-section {
+      padding: 0 20px 16px;
+
+      h4 {
+        color: #6c757d;
+        margin: 0 0 8px;
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      p {
+        margin: 0;
+        color: #212529;
+      }
+    }
+
+    .option-row {
+      padding: 12px 20px;
+      cursor: pointer;
+      color: #212529;
+
+      &:hover {
+        background: #f8f9fa;
+      }
+
+      &.danger {
+        color: #dc3545;
+      }
+    }
+  }
+}

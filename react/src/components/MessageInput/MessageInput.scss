@@ -105,4 +105,12 @@
       min-height: 44px;
     }
   }
+
+  .emoji-picker-container {
+    position: absolute;
+    bottom: 100%;
+    left: 16px;
+    z-index: 1000;
+    margin-bottom: 8px;
+  }
 }

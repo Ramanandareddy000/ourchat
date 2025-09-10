@@ -3,6 +3,7 @@ import { User, Message } from '../../types';
 import { ChatHeader } from '../ChatHeader/ChatHeader';
 import { MessageList } from '../MessageList/MessageList';
 import { MessageInput } from '../MessageInput/MessageInput';
+import { ContactView } from '../ContactView/ContactView';
 import './ChatArea.scss';
 
 interface ChatAreaProps {
@@ -11,6 +12,9 @@ interface ChatAreaProps {
   onSendMessage: (text: string) => void;
   onBack: () => void;
   isMobile: boolean;
+  onViewContact: () => void;
+  contactViewOpen: boolean;
+  onCloseContactView: () => void;
 }
 
 export const ChatArea: React.FC<ChatAreaProps> = ({
@@ -18,7 +22,10 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
   messages,
   onSendMessage,
   onBack,
-  isMobile
+  isMobile,
+  onViewContact,
+  contactViewOpen,
+  onCloseContactView
 }) => {
   if (!selectedUser) {
     return (
@@ -30,9 +37,15 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
 
   return (
     <div className="chat-area">
-      <ChatHeader user={selectedUser} onBack={onBack} isMobile={isMobile} />
-      <MessageList messages={messages} isGroup={selectedUser.isGroup} />
-      <MessageInput onSendMessage={onSendMessage} />
+      {!contactViewOpen && <ChatHeader user={selectedUser} onBack={onBack} isMobile={isMobile} onViewContact={onViewContact} />}
+      {contactViewOpen ? (
+        <ContactView user={selectedUser} onClose={onCloseContactView} />
+      ) : (
+        <>
+          <MessageList messages={messages} isGroup={selectedUser.isGroup} />
+          <MessageInput onSendMessage={onSendMessage} />
+        </>
+      )}
     </div>
   );
 };

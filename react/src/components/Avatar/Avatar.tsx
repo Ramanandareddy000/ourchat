@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { User } from '../../types';
 import './Avatar.scss';
 
@@ -8,23 +8,25 @@ interface AvatarProps {
 }
 
 export const Avatar: React.FC<AvatarProps> = ({ user, size }) => {
+  const [imageError, setImageError] = useState(false);
+
   return (
     <div className="avatar" style={{ width: size, height: size }}>
-      {user.image ? (
+      {user.image && !imageError ? (
         <img 
           src={user.image} 
           alt={user.name}
-          onError={(e) => {
-            const img = e.target as HTMLImageElement;
-            const fallback = img.nextElementSibling as HTMLElement;
-            img.style.display = 'none';
-            if (fallback) fallback.style.display = 'flex';
+          onLoad={() => console.log('Image loaded:', user.image)}
+          onError={() => {
+            console.log('Image failed to load:', user.image);
+            setImageError(true);
           }}
         />
-      ) : null}
-      <span className="avatar-fallback" style={{ display: user.image ? 'none' : 'flex' }}>
-        {user.avatar}
-      </span>
+      ) : (
+        <span className="avatar-fallback">
+          {user.avatar}
+        </span>
+      )}
     </div>
   );
 };

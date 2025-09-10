@@ -6,6 +6,7 @@ export interface User {
   online: boolean;
   lastSeen: string;
   phone?: string;
+  about?: string;
   isGroup?: boolean;
 }
 

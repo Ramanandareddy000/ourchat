@@ -9,3 +9,6 @@ export { ChatHeader } from './ChatHeader/ChatHeader';
 export { MessageList } from './MessageList/MessageList';
 export { MessageBubble } from './MessageBubble/MessageBubble';
 export { MessageInput } from './MessageInput/MessageInput';
+export { Dialog } from './Dialog/Dialog';
+export { KebabMenu } from './Dialog/KebabMenu';
+export { ContactView } from './ContactView/ContactView';

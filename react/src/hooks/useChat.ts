@@ -7,6 +7,7 @@ export const useChat = () => {
   const [messages, setMessages] = useState(initialMessages);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [chatOpen, setChatOpen] = useState(false);
+  const [contactViewOpen, setContactViewOpen] = useState(false);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
@@ -44,6 +45,14 @@ export const useChat = () => {
     setCurrentChatId(null);
   };
 
+  const openContactView = () => {
+    setContactViewOpen(true);
+  };
+
+  const closeContactView = () => {
+    setContactViewOpen(false);
+  };
+
   const selectedUser = [...users, ...groups].find(user => user.id === currentChatId) || null;
   const currentMessages = currentChatId ? messages[currentChatId] || [] : [];
 
@@ -52,10 +61,13 @@ export const useChat = () => {
     messages,
     isMobile,
     chatOpen,
+    contactViewOpen,
     selectedUser,
     currentMessages,
     sendMessage,
     selectChat,
-    closeChat
+    closeChat,
+    openContactView,
+    closeContactView
   };
 };

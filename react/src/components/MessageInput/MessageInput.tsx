@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { EmojiPicker } from './EmojiPicker';
 import './MessageInput.scss';
 
 interface MessageInputProps {
@@ -7,6 +8,7 @@ interface MessageInputProps {
 
 export const MessageInput: React.FC<MessageInputProps> = ({ onSendMessage }) => {
   const [messageText, setMessageText] = useState('');
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   const handleSend = () => {
     if (messageText.trim()) {
@@ -19,6 +21,10 @@ export const MessageInput: React.FC<MessageInputProps> = ({ onSendMessage }) => 
     if (e.key === 'Enter') {
       handleSend();
     }
+  };
+
+  const handleEmojiClick = (emojiObject: any) => {
+    setMessageText(prev => prev + emojiObject.emoji);
   };
 
   const handleAttachment = () => {
@@ -47,7 +53,12 @@ export const MessageInput: React.FC<MessageInputProps> = ({ onSendMessage }) => 
   return (
     <div className="message-input">
       <div className="input-container">
-        <button className="action-btn" onClick={() => setMessageText(prev => prev + '😊')}>😊</button>
+        <button 
+          className="action-btn" 
+          onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+        >
+          😊
+        </button>
         <input
           type="text"
           placeholder="Type a message"
@@ -63,6 +74,12 @@ export const MessageInput: React.FC<MessageInputProps> = ({ onSendMessage }) => 
           <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
         </svg>
       </button>
+      
+      <EmojiPicker
+        isOpen={showEmojiPicker}
+        onClose={() => setShowEmojiPicker(false)}
+        onEmojiClick={handleEmojiClick}
+      />
     </div>
   );
 };

@@ -9,11 +9,14 @@ export const ChatUIScreen: React.FC = () => {
     messages,
     isMobile,
     chatOpen,
+    contactViewOpen,
     selectedUser,
     currentMessages,
     sendMessage,
     selectChat,
-    closeChat
+    closeChat,
+    openContactView,
+    closeContactView
   } = useChat();
 
   const {
@@ -43,6 +46,9 @@ export const ChatUIScreen: React.FC = () => {
         onSendMessage={sendMessage}
         onBack={closeChat}
         isMobile={isMobile}
+        onViewContact={openContactView}
+        contactViewOpen={contactViewOpen}
+        onCloseContactView={closeContactView}
       />
     </div>
   );

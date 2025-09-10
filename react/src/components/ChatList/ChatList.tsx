@@ -1,6 +1,6 @@
 import React from 'react';
 import { User } from '../../types';
-import { Avatar } from '../Avatar/Avatar';
+import { Avatar } from '..';
 import './ChatList.scss';
 
 interface ChatListProps {
