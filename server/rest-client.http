@@ -1,0 +1,86 @@
+### Variables
+@baseUrl = http://localhost:3000
+@userId = 7
+@invalidUserId = 9999
+
+### Create a new user
+# @name createUser
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+  "username": "johndoe",
+  "password": "123456",
+  "displayName": "John Doe",
+  "avatarUrl": "https://example.com/avatar.jpg"
+}
+
+### Create a user with invalid data (should return validation error)
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+  "username": "",
+  "password": "123",  // Too short
+  "displayName": ""
+}
+
+### Create a user with minimal data
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+  "username": "janedoe",
+  "password": "123456",
+  "displayName": "Jane Doe"
+}
+
+### Get all users
+GET {{baseUrl}}/users
+
+### Get a specific user by ID
+GET {{baseUrl}}/users/{{userId}}
+
+### Get a non-existent user (should return 404)
+GET {{baseUrl}}/users/{{invalidUserId}}
+
+### Update a user
+PUT {{baseUrl}}/users/{{userId}}
+Content-Type: application/json
+
+{
+  "displayName": "Jane Smith"
+}
+
+### Update a user with partial data
+PUT {{baseUrl}}/users/{{userId}}
+Content-Type: application/json
+
+{
+  "username": "janesmith"
+}
+
+### Update a user with all fields
+PUT {{baseUrl}}/users/{{userId}}
+Content-Type: application/json
+
+{
+  "username": "janesmith",
+  "password": "newpassword",
+  "displayName": "Jane Smith",
+  "avatarUrl": "https://example.com/new-avatar.jpg"
+}
+
+### Update a non-existent user (should return 404)
+PUT {{baseUrl}}/users/{{invalidUserId}}
+Content-Type: application/json
+
+{
+  "displayName": "Invalid User"
+}
+
+### Delete a user
+DELETE {{baseUrl}}/users/{{userId}}
+
+### Delete a non-existent user (should return 404)
+DELETE {{baseUrl}}/users/{{invalidUserId}}
