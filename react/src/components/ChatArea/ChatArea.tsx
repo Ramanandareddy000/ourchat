@@ -1,6 +1,6 @@
 import React from 'react';
 import { User, Message } from '../../types';
-import { ChatHeader } from '../ChatHeader/ChatHeader';
+import { ChatHeader } from '../Chatheader/ChatHeader';
 import { MessageList } from '../MessageList/MessageList';
 import { MessageInput } from '../MessageInput/MessageInput';
 import { ContactView } from '../ContactView/ContactView';

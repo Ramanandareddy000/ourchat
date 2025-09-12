@@ -6,13 +6,15 @@ interface KebabMenuProps {
   onMute: () => void;
   onBlock: () => void;
   onDelete: () => void;
+  isMuted: boolean;
 }
 
 export const KebabMenu: React.FC<KebabMenuProps> = ({ 
   onViewContact, 
   onMute, 
   onBlock, 
-  onDelete 
+  onDelete,
+  isMuted
 }) => {
   return (
     <div className="kebab-menu">
@@ -20,7 +22,7 @@ export const KebabMenu: React.FC<KebabMenuProps> = ({
         View Contact
       </button>
       <button className="menu-item" onClick={onMute}>
-        Mute
+        {isMuted ? 'Unmute' : 'Mute'}
       </button>
       <button className="menu-item" onClick={onBlock}>
         Block

@@ -1,5 +1,4 @@
 import { useState, useMemo } from 'react';
-import { User } from '../types';
 import { users, groups } from '../utils/data';
 
 export const useSearch = () => {

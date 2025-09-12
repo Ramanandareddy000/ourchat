@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { User, Message } from '../types';
+import { Message } from '../types';
 import { users, groups, messages as initialMessages } from '../utils/data';
 
 export const useChat = () => {
