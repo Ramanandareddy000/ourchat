@@ -12,6 +12,12 @@ const mockUsers: User[] = [
     password_hash: 'hashedpassword1',
     display_name: 'Test User',
     avatar_url: '',
+    image: '',
+    online: true,
+    last_seen: new Date().toISOString(),
+    phone: '',
+    about: '',
+    is_group: false,
     created_at: new Date(),
     updated_at: new Date(),
   } as User,
@@ -21,6 +27,12 @@ const mockUsers: User[] = [
     password_hash: 'hashedpassword2',
     display_name: 'John Doe',
     avatar_url: '',
+    image: '',
+    online: true,
+    last_seen: new Date().toISOString(),
+    phone: '',
+    about: '',
+    is_group: false,
     created_at: new Date(),
     updated_at: new Date(),
   } as User,
@@ -31,12 +43,18 @@ let nextId = 3;
 @Injectable()
 export class MockUserService implements IUsersService {
   create(createUserDto: CreateUserDto): Promise<User> {
-    const newUser: User = {
+    const newUser = {
       id: nextId++,
       username: createUserDto.username,
       password_hash: createUserDto.password,
       display_name: createUserDto.displayName,
       avatar_url: createUserDto.avatarUrl || '',
+      image: '',
+      online: true,
+      last_seen: new Date().toISOString(),
+      phone: '',
+      about: '',
+      is_group: false,
       created_at: new Date(),
       updated_at: new Date(),
     } as User;
@@ -69,7 +87,7 @@ export class MockUserService implements IUsersService {
     const existingUser = mockUsers[userIndex];
 
     // Create updated user object with all required fields
-    const updatedUser: User = {
+    const updatedUser = {
       id: existingUser.id,
       username:
         updateUserDto.username !== undefined
@@ -87,6 +105,12 @@ export class MockUserService implements IUsersService {
         updateUserDto.avatarUrl !== undefined
           ? updateUserDto.avatarUrl
           : existingUser.avatar_url,
+      image: existingUser.image,
+      online: existingUser.online,
+      last_seen: existingUser.last_seen,
+      phone: existingUser.phone,
+      about: existingUser.about,
+      is_group: existingUser.is_group,
       created_at: existingUser.created_at,
       updated_at: new Date(),
     } as User;

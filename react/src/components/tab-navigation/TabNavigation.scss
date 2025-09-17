@@ -1,0 +1,40 @@
+@use '../../styles/variables.scss';
+
+.nav-tabs {
+  display: flex;
+  background: variables.$white;
+  border-bottom: 1px solid variables.$border-color;
+
+  .nav-tab {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    background: transparent;
+    color: variables.$text-secondary;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+    font-weight: 500;
+    position: relative;
+
+    &:hover {
+      background: variables.$background-light;
+      color: variables.$primary-color;
+    }
+
+    &.active {
+      color: variables.$primary-color;
+      background: variables.$background-light;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: variables.$primary-color;
+      }
+    }
+  }
+}

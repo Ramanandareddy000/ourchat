@@ -1,13 +1,16 @@
 export interface User {
   id: number;
-  name: string;
-  avatar: string;
+  username: string;
+  display_name: string;
+  avatar_url: string;
   image?: string;
   online: boolean;
-  lastSeen: string;
+  last_seen: string;
   phone?: string;
   about?: string;
-  isGroup?: boolean;
+  is_group?: boolean;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface Message {

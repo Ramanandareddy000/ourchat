@@ -19,7 +19,7 @@ export const useSearch = () => {
   const filteredUsers = useMemo(() => {
     return searchQuery 
       ? allUsers.filter(user => 
-          user.name.toLowerCase().includes(searchQuery.toLowerCase())
+          user.display_name.toLowerCase().includes(searchQuery.toLowerCase())
         )
       : allUsers;
   }, [allUsers, searchQuery]);

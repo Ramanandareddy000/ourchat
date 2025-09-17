@@ -1,78 +1,166 @@
 import { User, Message } from '../types';
+import * as dataService from '../modules/api/data-service';
 
+// Function to fetch users from the database
+export const fetchUsersFromDB = async (): Promise<User[]> => {
+  try {
+    const users = await dataService.fetchUsers();
+    return users;
+  } catch (error) {
+    console.error('Failed to fetch users from database:', error);
+    // Return empty array or fallback to static data if needed
+    return [];
+  }
+};
+
+// Function to fetch messages from the database
+export const fetchMessagesFromDB = async (): Promise<Record<number, Message[]>> => {
+  try {
+    const messages = await dataService.fetchMessages();
+    // Group messages by user ID for easier access
+    const groupedMessages: Record<number, Message[]> = {};
+    
+    messages.forEach(message => {
+      const userId = message.is_group ? message.receiver_id : 
+                     message.isMe ? message.receiver_id : message.sender_id;
+      
+      if (!groupedMessages[userId]) {
+        groupedMessages[userId] = [];
+      }
+      
+      groupedMessages[userId].push({
+        id: message.id,
+        text: message.text,
+        time: message.time,
+        isMe: message.isMe,
+        sender: message.sender,
+      });
+    });
+    
+    return groupedMessages;
+  } catch (error) {
+    console.error('Failed to fetch messages from database:', error);
+    // Return empty object or fallback to static data if needed
+    return {};
+  }
+};
+
+// Function to fetch messages for a specific user from the database
+export const fetchUserMessagesFromDB = async (userId: number): Promise<Message[]> => {
+  try {
+    const messages = await dataService.fetchMessagesByUserId(userId);
+    return messages.map(message => ({
+      id: message.id,
+      text: message.text,
+      time: message.time,
+      isMe: message.isMe,
+      sender: message.sender,
+    }));
+  } catch (error) {
+    console.error(`Failed to fetch messages for user ${userId} from database:`, error);
+    // Return empty array or fallback to static data if needed
+    return [];
+  }
+};
+
+// Static data as fallback
 export const users: User[] = [
   { 
     id: 1, 
-    name: "Alice Johnson", 
-    avatar: "A", 
+    username: "alicejohnson",
+    display_name: "Alice Johnson", 
+    avatar_url: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
     image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
     online: true,
-    lastSeen: "online",
-    phone: "+1 (555) 123-4567"
+    last_seen: "online",
+    phone: "+1 (555) 123-4567",
+    created_at: "2023-01-01T00:00:00Z",
+    updated_at: "2023-01-01T00:00:00Z"
   },
   { 
     id: 2, 
-    name: "Bob Smith", 
-    avatar: "B", 
+    username: "bobsmith",
+    display_name: "Bob Smith", 
+    avatar_url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
     image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
     online: false,
-    lastSeen: "last seen 2 hours ago",
-    phone: "+1 (555) 234-5678"
+    last_seen: "last seen 2 hours ago",
+    phone: "+1 (555) 234-5678",
+    created_at: "2023-01-01T00:00:00Z",
+    updated_at: "2023-01-01T00:00:00Z"
   },
   { 
     id: 3, 
-    name: "Carol Davis", 
-    avatar: "C", 
+    username: "caroldavis",
+    display_name: "Carol Davis", 
+    avatar_url: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
     image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
     online: true,
-    lastSeen: "online",
-    phone: "+1 (555) 345-6789"
+    last_seen: "online",
+    phone: "+1 (555) 345-6789",
+    created_at: "2023-01-01T00:00:00Z",
+    updated_at: "2023-01-01T00:00:00Z"
   },
   { 
     id: 4, 
-    name: "David Wilson", 
-    avatar: "D", 
+    username: "davidwilson",
+    display_name: "David Wilson", 
+    avatar_url: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
     image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
     online: false,
-    lastSeen: "last seen yesterday",
-    phone: "+1 (555) 456-7890"
+    last_seen: "last seen yesterday",
+    phone: "+1 (555) 456-7890",
+    created_at: "2023-01-01T00:00:00Z",
+    updated_at: "2023-01-01T00:00:00Z"
   },
   { 
     id: 5, 
-    name: "Emma Brown", 
-    avatar: "E", 
+    username: "emmabrown",
+    display_name: "Emma Brown", 
+    avatar_url: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face",
     image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face",
     online: true,
-    lastSeen: "online",
-    phone: "+1 (555) 567-8901"
+    last_seen: "online",
+    phone: "+1 (555) 567-8901",
+    created_at: "2023-01-01T00:00:00Z",
+    updated_at: "2023-01-01T00:00:00Z"
   },
   { 
     id: 6, 
-    name: "Frank Miller", 
-    avatar: "F", 
+    username: "frankmiller",
+    display_name: "Frank Miller", 
+    avatar_url: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
     image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
     online: false,
-    lastSeen: "last seen 5 minutes ago",
-    phone: "+1 (555) 678-9012"
+    last_seen: "last seen 5 minutes ago",
+    phone: "+1 (555) 678-9012",
+    created_at: "2023-01-01T00:00:00Z",
+    updated_at: "2023-01-01T00:00:00Z"
   }
 ];
 
 export const groups: User[] = [
   {
     id: 101,
-    name: "Team Alpha",
-    avatar: "TA",
+    username: "teamalpha",
+    display_name: "Team Alpha",
+    avatar_url: "TA",
     online: true,
-    lastSeen: "5 members",
-    isGroup: true
+    last_seen: "5 members",
+    is_group: true,
+    created_at: "2023-01-01T00:00:00Z",
+    updated_at: "2023-01-01T00:00:00Z"
   },
   {
     id: 102,
-    name: "Project Beta",
-    avatar: "PB",
+    username: "projectbeta",
+    display_name: "Project Beta",
+    avatar_url: "PB",
     online: true,
-    lastSeen: "8 members",
-    isGroup: true
+    last_seen: "8 members",
+    is_group: true,
+    created_at: "2023-01-01T00:00:00Z",
+    updated_at: "2023-01-01T00:00:00Z"
   }
 ];
 

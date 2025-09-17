@@ -9,7 +9,6 @@ import {
   Unique,
   CreatedAt,
   UpdatedAt,
-  ForeignKey,
 } from 'sequelize-typescript';
 
 @Table({
@@ -25,18 +24,36 @@ export class User extends Model {
   @AllowNull(false)
   @Unique
   @Column(DataType.STRING)
-  username: string;
+  declare username: string;
 
   @AllowNull(false)
   @Column(DataType.STRING)
-  password_hash: string;
+  declare password_hash: string;
 
   @AllowNull(false)
   @Column(DataType.STRING)
-  display_name: string;
+  declare display_name: string;
 
   @Column(DataType.STRING)
-  avatar_url: string;
+  declare avatar_url: string | null;
+
+  @Column(DataType.STRING)
+  declare image: string | null;
+
+  @Column(DataType.BOOLEAN)
+  declare online: boolean;
+
+  @Column(DataType.STRING)
+  declare last_seen: string | null;
+
+  @Column(DataType.STRING)
+  declare phone: string | null;
+
+  @Column(DataType.STRING)
+  declare about: string | null;
+
+  @Column(DataType.BOOLEAN)
+  declare is_group: boolean;
 
   @CreatedAt
   @Column(DataType.DATE)
@@ -45,4 +62,40 @@ export class User extends Model {
   @UpdatedAt
   @Column(DataType.DATE)
   declare updated_at: Date;
+
+  // Serialization configuration to control which fields are returned
+  toJSON() {
+    // Type the attributes properly
+    const attributes = { ...this.get() } as {
+      [key: string]: any;
+      id?: number;
+      username?: string;
+      display_name?: string;
+      avatar_url?: string;
+      image?: string;
+      online?: boolean;
+      last_seen?: string;
+      phone?: string;
+      about?: string;
+      is_group?: boolean;
+      created_at?: Date;
+      updated_at?: Date;
+      displayName?: string;
+      avatarUrl?: string;
+      password_hash?: string;
+    };
+
+    // Map model fields to match frontend expectations
+    if (attributes.display_name !== undefined) {
+      attributes.displayName = attributes.display_name;
+    }
+
+    if (attributes.avatar_url !== undefined || attributes.image !== undefined) {
+      attributes.avatarUrl = attributes.avatar_url || attributes.image;
+    }
+
+    // Remove sensitive fields
+    delete attributes.password_hash;
+    return attributes;
+  }
 }

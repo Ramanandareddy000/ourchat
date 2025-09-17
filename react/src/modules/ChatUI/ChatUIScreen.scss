@@ -1,0 +1,52 @@
+.chat-ui-screen {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background-color: #F5EDE6; // Soft Beige background
+
+
+  .sidebar {
+    width: 30%;
+    min-width: 300px;
+    max-width: none;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #e0d5cc;
+  }
+
+  .chat-area {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  @media (max-width: 768px) {
+    &.chat-open .sidebar {
+      display: none;
+    }
+    
+    &.chat-open .chat-area {
+      display: flex;
+      width: 100%;
+      height: 100%;
+    }
+    
+    &:not(.chat-open) .chat-area {
+      display: none;
+    }
+    
+    .sidebar {
+      width: 100%;
+      min-width: unset;
+      max-width: unset;
+    }
+    
+    .chat-area {
+      width: 100%;
+    }
+  }
+}

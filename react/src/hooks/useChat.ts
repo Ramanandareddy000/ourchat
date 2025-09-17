@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Message } from '../types';
 import { users, groups, messages as initialMessages } from '../utils/data';
-
+// Keeping it for backward compatibility with components that might still use it
 export const useChat = () => {
   const [currentChatId, setCurrentChatId] = useState<number | null>(null);
   const [messages, setMessages] = useState(initialMessages);

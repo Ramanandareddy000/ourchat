@@ -1,0 +1,43 @@
+@use '../../styles/variables.scss';
+
+.search-container {
+  padding: 16px 20px;
+  background: variables.$white;
+  border-bottom: 1px solid variables.$border-color;
+
+  .search-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      color: variables.$text-placeholder;
+      font-size: 16px;
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 10px 12px 10px 40px;
+      border: 1px solid variables.$border-color;
+      border-radius: 20px;
+      background: variables.$background-light;
+      font-size: 14px;
+      outline: none;
+      color: variables.$text-primary;
+      transition: all 0.2s;
+
+      &:focus {
+        border-color: variables.$primary-color;
+        background: variables.$white;
+        box-shadow: 0 0 0 3px rgba(106, 27, 154, 0.1);
+      }
+
+      &::placeholder {
+        color: variables.$text-placeholder;
+      }
+    }
+  }
+}

@@ -1,0 +1,47 @@
+@use '../../styles/variables.scss';
+
+.chat-list {
+  overflow-y: auto;
+  height: calc(100vh - 180px);
+  flex: 1;
+
+  .chat-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    cursor: pointer;
+    border-bottom: 1px solid variables.$border-color;
+    transition: all 0.2s;
+    position: relative;
+
+    &:hover {
+      background: variables.$background-light;
+    }
+
+    &.active {
+      background: variables.$background-light;
+      border-left: 3px solid variables.$primary-color;
+    }
+
+    .chat-info {
+      flex: 1;
+      margin-left: 15px;
+
+      .name {
+        color: variables.$text-primary;
+        font-size: 17px;
+        margin-bottom: 2px;
+        font-weight: 500;
+      }
+
+      .last-message {
+        color: variables.$text-secondary;
+        font-size: 14px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 200px;
+      }
+    }
+  }
+}
