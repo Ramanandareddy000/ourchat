@@ -9,7 +9,11 @@ import {
   Unique,
   CreatedAt,
   UpdatedAt,
+  HasMany,
 } from 'sequelize-typescript';
+import { Conversation } from './conversation.model';
+import { ConversationParticipant } from './conversation-participant.model';
+import { MessageStatus } from './message-status.model';
 
 @Table({
   tableName: 'users',
@@ -52,8 +56,14 @@ export class User extends Model {
   @Column(DataType.STRING)
   declare about: string | null;
 
-  @Column(DataType.BOOLEAN)
-  declare is_group: boolean;
+  @HasMany(() => Conversation)
+  declare createdConversations: Conversation[];
+
+  @HasMany(() => ConversationParticipant)
+  declare conversationParticipants: ConversationParticipant[];
+
+  @HasMany(() => MessageStatus)
+  declare messageStatuses: MessageStatus[];
 
   @CreatedAt
   @Column(DataType.DATE)
@@ -77,25 +87,43 @@ export class User extends Model {
       last_seen?: string;
       phone?: string;
       about?: string;
-      is_group?: boolean;
       created_at?: Date;
       updated_at?: Date;
-      displayName?: string;
-      avatarUrl?: string;
       password_hash?: string;
     };
 
-    // Map model fields to match frontend expectations
-    if (attributes.display_name !== undefined) {
-      attributes.displayName = attributes.display_name;
-    }
+    // Create a new object with frontend-friendly field names
+    const frontendAttributes: {
+      id?: number;
+      username?: string;
+      displayName?: string;
+      avatarUrl?: string;
+      online?: boolean;
+      last_seen?: string;
+      phone?: string;
+      about?: string;
+      created_at?: Date;
+      updated_at?: Date;
+    } = {
+      id: attributes.id,
+      username: attributes.username,
+      displayName: attributes.display_name,
+      avatarUrl: attributes.avatar_url || attributes.image,
+      online: attributes.online,
+      last_seen: attributes.last_seen,
+      phone: attributes.phone,
+      about: attributes.about,
+      created_at: attributes.created_at,
+      updated_at: attributes.updated_at,
+    };
 
-    if (attributes.avatar_url !== undefined || attributes.image !== undefined) {
-      attributes.avatarUrl = attributes.avatar_url || attributes.image;
-    }
+    // Remove undefined values
+    Object.keys(frontendAttributes).forEach((key) => {
+      if (frontendAttributes[key] === undefined) {
+        delete frontendAttributes[key as keyof typeof frontendAttributes];
+      }
+    });
 
-    // Remove sensitive fields
-    delete attributes.password_hash;
-    return attributes;
+    return frontendAttributes;
   }
 }

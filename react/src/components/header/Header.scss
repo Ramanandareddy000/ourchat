@@ -60,5 +60,41 @@
         background: rgba(255, 255, 255, 0.3);
       }
     }
+    
+    .kebab-menu-wrapper {
+      display: none;
+      
+      .kebab-button {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        background: rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        cursor: pointer;
+        font-size: 16px;
+        transition: all 0.2s ease;
+        color: variables.$white;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.3);
+        }
+      }
+      
+      @media (max-width: 768px) {
+        display: block;
+      }
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .user-info {
+      .welcome-text {
+        display: none;
+      }
+    }
   }
 }

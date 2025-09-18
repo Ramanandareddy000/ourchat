@@ -2,6 +2,7 @@
 @use 'variables';
 @use '../App.scss';
 @use '../components/sidebar/Sidebar.scss';
+@use '../components/sidebar/Settings.scss';
 @use '../components/header/Header.scss';
 @use '../components/search-bar/SearchBar.scss';
 @use '../components/tab-navigation/TabNavigation.scss';
@@ -14,8 +15,12 @@
 @use '../components/message-input/MessageInput.scss';
 
 @use '../components/avatar/Avatar.scss';
+@use '../components/vertical-icon-bar/VerticalIconBar.scss';
 
 @use '../modules/ChatUI/ChatUIScreen.scss';
+@use '../modules/ChatUI/NotificationsPage/NotificationsPage.scss';
+@use '../modules/ChatUI/GroupsPage/GroupsPage.scss';
+@use '../modules/ChatUI/GroupDetailPage/GroupDetailPage.scss';
 @use '../modules/Registration/RegistrationPage.scss';
 @use '../modules/auth/components/LoginPage.scss';
 

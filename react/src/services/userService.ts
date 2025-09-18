@@ -1,5 +1,5 @@
-import axiosInstance from '../api/axiosInstance';
 import { User } from '../services/authService';
+import { BaseService } from './BaseService';
 
 export interface UserProfile {
   id: string;
@@ -9,29 +9,27 @@ export interface UserProfile {
   createdAt: string;
 }
 
-export const getUserProfile = async (): Promise<UserProfile> => {
-  try {
-    const response = await axiosInstance.get<UserProfile>('/api/profile');
-    return response.data;
-  } catch (error: any) {
-    throw new Error(error.response?.data?.message || 'Failed to fetch profile');
+class UserService extends BaseService {
+  constructor() {
+    super('/api');
   }
-};
 
-export const updateUserProfile = async (userData: Partial<UserProfile>): Promise<UserProfile> => {
-  try {
-    const response = await axiosInstance.put<UserProfile>('/api/profile', userData);
+  async getUserProfile(): Promise<UserProfile> {
+    const response = await this.fetchData<UserProfile>('/profile');
     return response.data;
-  } catch (error: any) {
-    throw new Error(error.response?.data?.message || 'Failed to update profile');
   }
-};
 
-export const getUsers = async (): Promise<User[]> => {
-  try {
-    const response = await axiosInstance.get<User[]>('/api/users');
+  async updateUserProfile(userData: Partial<UserProfile>): Promise<UserProfile> {
+    const response = await this.updateData('', userData, '/profile');
     return response.data;
-  } catch (error: any) {
-    throw new Error(error.response?.data?.message || 'Failed to fetch users');
   }
-};
+
+  async getUsers(): Promise<User[]> {
+    const response = await this.fetchData<User[]>('/users');
+    return response.data;
+  }
+}
+
+// Export a singleton instance
+export const userService = new UserService();
+export default userService;

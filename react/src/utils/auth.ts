@@ -1,6 +1,6 @@
-import { logout } from '../services/authService';
+import authService from '../services/authService';
 
 export const handleLogout = () => {
-  logout();
+  authService.logout();
   window.location.href = '/login';
 };

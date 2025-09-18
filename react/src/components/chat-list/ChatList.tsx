@@ -18,10 +18,15 @@ export const ChatList: React.FC<ChatListProps> = ({
 }) => {
   return (
     <div className="chat-list">
-      {users.map(user => {
+      {users.map((user) => {
+        // For conversations, we want to show the last message
         const lastMessage = messages[user.id]?.length 
-          ? messages[user.id][messages[user.id].length - 1].text 
-          : user.last_seen;
+          ? messages[user.id][messages[user.id].length - 1] 
+          : null;
+          
+        const lastMessageText = lastMessage 
+          ? lastMessage.text 
+          : (user.is_group ? `${user.last_seen} members` : user.last_seen);
           
         return (
           <div
@@ -32,7 +37,7 @@ export const ChatList: React.FC<ChatListProps> = ({
             <Avatar user={user} size={49} />
             <div className="chat-info">
               <div className="name">{user.display_name}</div>
-              <div className="last-message">{lastMessage}</div>
+              <div className="last-message">{lastMessageText}</div>
             </div>
           </div>
         );

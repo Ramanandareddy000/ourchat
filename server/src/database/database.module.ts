@@ -1,6 +1,12 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { User, Message } from '../models';
+import {
+  User,
+  Message,
+  Conversation,
+  ConversationParticipant,
+  MessageStatus,
+} from '../models';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Dialect } from 'sequelize';
 
@@ -47,7 +53,13 @@ import { Dialect } from 'sequelize';
           database,
           autoLoadModels: true,
           synchronize,
-          models: [User, Message],
+          models: [
+            User,
+            Message,
+            Conversation,
+            ConversationParticipant,
+            MessageStatus,
+          ],
           logging: console.log, // Enable logging for debugging
           retryAttempts: 3,
           retryDelay: 1000,

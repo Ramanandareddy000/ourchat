@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { getCurrentUser, isAuthenticated, User } from '../services/authService';
+import authService from '../services/authService';
+import { User } from '../services/authService';
 
 export const useAuth = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -7,9 +8,9 @@ export const useAuth = () => {
 
   useEffect(() => {
     const initAuth = async () => {
-      if (isAuthenticated()) {
+      if (authService.isAuthenticated()) {
         try {
-          const currentUser = await getCurrentUser();
+          const currentUser = await authService.getCurrentUser();
           setUser(currentUser);
         } catch (error) {
           // If token is invalid, remove it

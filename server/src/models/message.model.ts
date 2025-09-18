@@ -10,8 +10,11 @@ import {
   UpdatedAt,
   ForeignKey,
   BelongsTo,
+  HasMany,
 } from 'sequelize-typescript';
 import { User } from './user.model';
+import { Conversation } from './conversation.model';
+import { MessageStatus } from './message-status.model';
 
 @Table({
   tableName: 'messages',
@@ -23,34 +26,29 @@ export class Message extends Model {
   @Column(DataType.INTEGER)
   declare id: number;
 
+  @ForeignKey(() => Conversation)
+  @Column(DataType.INTEGER)
+  declare conversation_id: number;
+
+  @ForeignKey(() => User)
+  @Column(DataType.INTEGER)
+  declare sender_id: number;
+
   @AllowNull(false)
   @Column(DataType.TEXT)
-  text: string;
+  declare text: string;
 
-  @AllowNull(false)
   @Column(DataType.STRING)
-  time: string;
+  declare attachment_url: string | null;
 
-  @AllowNull(false)
-  @Column(DataType.BOOLEAN)
-  is_me: boolean;
-
-  @ForeignKey(() => User)
-  @Column(DataType.INTEGER)
-  sender_id: number;
+  @BelongsTo(() => Conversation)
+  declare conversation: Conversation;
 
   @BelongsTo(() => User)
-  sender: User;
+  declare sender: User;
 
-  @Column(DataType.STRING)
-  sender_name: string;
-
-  @ForeignKey(() => User)
-  @Column(DataType.INTEGER)
-  receiver_id: number;
-
-  @Column(DataType.BOOLEAN)
-  is_group: boolean;
+  @HasMany(() => MessageStatus)
+  declare messageStatuses: MessageStatus[];
 
   @CreatedAt
   @Column(DataType.DATE)

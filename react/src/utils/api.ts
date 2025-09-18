@@ -1,8 +1,6 @@
 // API service for user registration
-const IS_DEV = import.meta.env.DEV || false;
-const API_BASE_URL = IS_DEV ? '/api' : (import.meta.env.VITE_API_BASE_URL || 'http://localhost:3002'); // Use proxy in dev, direct URL in prod
-
-import { User } from '../types';
+import { User } from "../types";
+import authService from "../services/authService";
 
 export interface CreateUserDto {
   username: string;
@@ -13,28 +11,32 @@ export interface CreateUserDto {
 
 export const registerUser = async (userData: CreateUserDto): Promise<User> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/users`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+    // Use the authService to register a new user
+    const registerData = {
+      username: userData.username,
+      password: userData.password,
+      displayName: userData.displayName,
+    };
+
+    const response = await authService.register(registerData);
+
+    if (response.success && response.user) {
+      return {
+        id: parseInt(response.user.id),
         username: userData.username,
-        password: userData.password,
-        displayName: userData.displayName,
-        avatarUrl: userData.avatarUrl || undefined,
-      }),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Registration failed');
+        display_name: response.user.displayName,
+        avatar_url: userData.avatarUrl || "",
+        image: undefined,
+        online: true,
+        last_seen: "Online",
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      };
+    } else {
+      throw new Error(response.message || "Registration failed");
     }
-
-    const user: User = await response.json();
-    return user;
   } catch (error) {
-    console.error('Registration error:', error);
+    console.error("Registration error:", error);
     throw error;
   }
 };

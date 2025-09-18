@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { LoginPage } from './modules/auth/components/login-page';
 import { RegistrationPage } from './modules/Registration';
@@ -20,8 +20,6 @@ const Dashboard: React.FC = () => {
 };
 
 const App: React.FC = () => {
-  const [showRegistration, setShowRegistration] = useState(false);
-
   return (
     <AuthProvider>
       <ChatProvider>
@@ -29,14 +27,66 @@ const App: React.FC = () => {
           <Route 
             path="/login" 
             element={
-              showRegistration ? (
-                <RegistrationPage onSwitchToLogin={() => setShowRegistration(false)} />
-              ) : (
-                <LoginPage onSwitchToRegister={() => setShowRegistration(true)} />
-              )
+              <LoginPage />
+            } 
+          />
+          <Route 
+            path="/register" 
+            element={
+              <RegistrationPage />
             } 
           />
           <Route path="/" element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/chat/:userId" element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/settings" element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/profile" element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/groups" element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/groups/:groupId" element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/notifications" element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/help" element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/about" element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/404" element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="*" element={
             <ProtectedRoute>
               <Dashboard />
             </ProtectedRoute>

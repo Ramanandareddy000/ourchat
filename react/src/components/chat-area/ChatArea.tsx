@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { User, Message } from '../../types';
 import { ChatHeader } from '../chat-header/ChatHeader';
 import { MessageList } from '../message-list/MessageList';
@@ -27,6 +27,11 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
   contactViewOpen,
   onCloseContactView
 }) => {
+  // Debugging: Log the props
+  useEffect(() => {
+    console.log('ChatArea props:', { selectedUser, messages });
+  }, [selectedUser, messages]);
+
   if (!selectedUser) {
     return (
       <div className="chat-area">
@@ -45,7 +50,7 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
       ) : (
         <>
           <div className="messages-wrapper">
-            <MessageList messages={messages} isGroup={selectedUser.is_group} />
+            <MessageList messages={messages} isGroup={selectedUser.is_group || false} />
           </div>
           <div className="input-container">
             <MessageInput onSendMessage={onSendMessage} />

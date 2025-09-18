@@ -8,7 +8,7 @@ interface LoginFormData {
   password: string;
 }
 
-export const LoginPage: React.FC<{ onSwitchToRegister: () => void }> = ({ onSwitchToRegister }) => {
+export const LoginPage: React.FC = () => {
   const [formData, setFormData] = useState<LoginFormData>({
     username: '',
     password: '',
@@ -30,8 +30,7 @@ export const LoginPage: React.FC<{ onSwitchToRegister: () => void }> = ({ onSwit
     
     try {
       await login(formData.username, formData.password);
-      // Navigate to the home page after successful login
-      navigate('/');
+      // Navigation is now handled in the auth context
     } catch (err) {
       // Error is handled by the auth context
       console.error('Login failed', err);
@@ -88,7 +87,7 @@ export const LoginPage: React.FC<{ onSwitchToRegister: () => void }> = ({ onSwit
         </form>
         
         <button 
-          onClick={onSwitchToRegister}
+          onClick={() => navigate('/register')}
           className="switch-link"
         >
           Don't have an account? Register

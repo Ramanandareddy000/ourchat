@@ -6,14 +6,16 @@
   display: flex;
   flex-direction: column;
   background: variables.$white;
-  border-right: 1px solid variables.$border-color;
-  box-shadow: 1px 0 5px rgba(0, 0, 0, 0.05);
+  border-right: 1px solid #e9e4f5; // Light purple tint for subtle separation
+  box-shadow: 2px 0 5px rgba(106, 27, 154, 0.1); // Subtle shadow with purple tint
   position: relative;
+  overflow: hidden;
 
   .sidebar-content {
     display: flex;
     flex-direction: column;
     height: 100%;
+    position: relative;
   }
   
   .sidebar-resizer {

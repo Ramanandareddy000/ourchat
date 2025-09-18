@@ -1,9 +1,10 @@
 import { useState, useMemo } from 'react';
-import { users, groups } from '../utils/data';
+import { useChat } from '../modules/chat';
 
 export const useSearch = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentTab, setCurrentTab] = useState<'all' | 'online' | 'groups'>('all');
+  const { users, groups } = useChat();
 
   const allUsers = useMemo(() => {
     switch (currentTab) {
@@ -14,7 +15,7 @@ export const useSearch = () => {
       default:
         return [...users, ...groups];
     }
-  }, [currentTab]);
+  }, [currentTab, users, groups]);
 
   const filteredUsers = useMemo(() => {
     return searchQuery 

@@ -1,12 +1,18 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { Message } from '../models';
+import { Message, Conversation, ConversationParticipant } from '../models';
 import { MessagesService } from './messages.service';
 import { MessagesController } from './messages.controller';
 import { MessageNotFoundExceptionFilter } from './exceptions/message-not-found.filter';
 
 @Module({
-  imports: [SequelizeModule.forFeature([Message])],
+  imports: [
+    SequelizeModule.forFeature([
+      Message,
+      Conversation,
+      ConversationParticipant,
+    ]),
+  ],
   providers: [
     MessagesService,
     {

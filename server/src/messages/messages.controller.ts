@@ -2,15 +2,15 @@ import {
   Controller,
   Get,
   Post,
+  Body,
   Put,
   Delete,
-  Body,
   Param,
+  HttpCode,
+  HttpStatus,
   ParseIntPipe,
   UsePipes,
   ValidationPipe,
-  HttpCode,
-  HttpStatus,
 } from '@nestjs/common';
 import { MessagesService } from './messages.service';
 import { Message } from '../models';
@@ -51,6 +51,22 @@ export class MessagesController {
     @Param('userId', ParseIntPipe) userId: number,
   ): Promise<Message[]> {
     return this.messagesService.findByUserId(userId);
+  }
+
+  @Get('user/:userId/conversations')
+  @HttpCode(HttpStatus.OK)
+  async getConversationsForUser(
+    @Param('userId', ParseIntPipe) userId: number,
+  ): Promise<any[]> {
+    return this.messagesService.getConversationsForUser(userId);
+  }
+
+  @Get('conversation/:conversationId')
+  @HttpCode(HttpStatus.OK)
+  async findByConversationId(
+    @Param('conversationId', ParseIntPipe) conversationId: number,
+  ): Promise<Message[]> {
+    return this.messagesService.findByConversationId(conversationId);
   }
 
   @Put(':id')

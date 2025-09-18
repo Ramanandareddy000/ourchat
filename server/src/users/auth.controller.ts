@@ -8,15 +8,28 @@ import {
   HttpCode,
   HttpStatus,
   UnauthorizedException,
+  BadRequestException,
 } from '@nestjs/common';
 import { UserService } from './users.service';
 import { JwtService } from './jwt.service';
-import { User } from '../models';
 import type { CreateUserDto } from './dto/create-user.dto';
-import { LoginDto } from './dto/login.dto';
+import { LoginDto, RegisterDto } from './dto';
+import { ValidationError } from 'sequelize';
 
 @Controller('auth')
-@UsePipes(new ValidationPipe({ transform: true }))
+@UsePipes(
+  new ValidationPipe({
+    transform: true,
+    whitelist: true,
+    forbidNonWhitelisted: true,
+    exceptionFactory: (errors) => {
+      const errorMessage = errors
+        .map((error) => Object.values(error.constraints || {}).join(', '))
+        .join(', ');
+      return new BadRequestException(errorMessage || 'Validation failed');
+    },
+  }),
+)
 export class AuthController {
   private readonly logger = new Logger(AuthController.name);
 
@@ -27,9 +40,7 @@ export class AuthController {
 
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  async login(
-    @Body() loginDto: LoginDto,
-  ): Promise<{ token: string; user: Partial<User> }> {
+  async login(@Body() loginDto: LoginDto): Promise<{ token: string }> {
     try {
       this.logger.log(`Login attempt for user: ${loginDto.username}`);
 
@@ -61,7 +72,6 @@ export class AuthController {
       this.logger.log(`Successful login for user: ${loginDto.username}`);
       return {
         token,
-        user: user.toJSON(),
       };
     } catch (error) {
       this.logger.error(`Login error for user ${loginDto.username}:`, error);
@@ -70,10 +80,15 @@ export class AuthController {
   }
 
   @Post('register')
-  async register(
-    @Body() createUserDto: CreateUserDto,
-  ): Promise<{ token: string; user: Partial<User> }> {
+  async register(@Body() registerDto: RegisterDto): Promise<{ token: string }> {
     try {
+      // Transform RegisterDto to CreateUserDto
+      const createUserDto: CreateUserDto = {
+        username: registerDto.username,
+        password: registerDto.password,
+        displayName: registerDto.displayName,
+      };
+
       this.logger.log(
         `Registration attempt for user: ${createUserDto.username}`,
       );
@@ -89,14 +104,32 @@ export class AuthController {
       );
       return {
         token,
-        user: user.toJSON(),
       };
-    } catch (error) {
+    } catch (error: unknown) {
       this.logger.error(
-        `Registration error for user ${createUserDto.username}:`,
+        `Registration error for user ${registerDto.username}:`,
         error,
       );
-      throw error;
+
+      // Handle specific error types
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+
+      // Handle validation errors
+      if (error instanceof ValidationError) {
+        const errorMessage =
+          error.errors?.map((err) => err.message).join(', ') ||
+          'Validation error';
+        throw new BadRequestException('Registration failed: ' + errorMessage);
+      }
+
+      // Handle other errors
+      if (error instanceof Error) {
+        throw new BadRequestException('Registration failed: ' + error.message);
+      }
+
+      throw new BadRequestException('Registration failed: Unknown error');
     }
   }
 }

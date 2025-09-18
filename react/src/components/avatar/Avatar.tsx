@@ -9,6 +9,7 @@ interface AvatarProps {
 
 export const Avatar: React.FC<AvatarProps> = ({ user, size }) => {
   const [imageError, setImageError] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   const style = {
     width: `${size}px`,
@@ -16,22 +17,40 @@ export const Avatar: React.FC<AvatarProps> = ({ user, size }) => {
     fontSize: `${Math.max(12, size / 2.5)}px`,
   };
 
+  // Use avatar_url first, then fallback to image if available
+  const avatarSource = user.avatar_url || user.image;
+
+  // Get initials for fallback
+  const getInitials = () => {
+    const name = user.display_name || user.username || 'U';
+    return name.charAt(0).toUpperCase();
+  };
+
   return (
     <div className={`avatar ${user.online ? "online" : ""}`} style={style}>
-      {user.avatar_url && !imageError ? (
+      {avatarSource && !imageError ? (
         <img
-          src={user.avatar_url}
-          alt={user.display_name}
+          src={avatarSource}
+          alt={user.display_name || user.username || 'User avatar'}
+          onLoad={() => {
+            setImageLoaded(true);
+          }}
           onError={() => {
-            console.log("Image failed to load:", user.avatar_url);
+            console.log("Image failed to load:", avatarSource);
             setImageError(true);
+            setImageLoaded(false);
           }}
         />
-      ) : (
-        <div className="avatar-fallback">
-          {user.display_name.charAt(0).toUpperCase()}
-        </div>
-      )}
+      ) : null}
+      {/* Fallback avatar - always rendered, shown when image fails or no image */}
+      <div 
+        className="avatar-fallback"
+        style={{ 
+          display: (!avatarSource || imageError || !imageLoaded) ? 'flex' : 'none'
+        }}
+      >
+        {getInitials()}
+      </div>
     </div>
   );
 };

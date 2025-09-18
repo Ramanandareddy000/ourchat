@@ -2,9 +2,13 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { Message, User } from '../../types';
 import { webSocketService } from './websocket-service';
 import { useAuth } from '../auth';
+import { useNavigate } from 'react-router-dom';
+import { messageService } from '../../services/messageService';
 
 interface ChatContextType {
   messages: Record<number, Message[]>;
+  users: User[];
+  groups: User[];
   currentChatId: number | null;
   isMobile: boolean;
   chatOpen: boolean;
@@ -17,6 +21,7 @@ interface ChatContextType {
   openContactView: () => void;
   closeContactView: () => void;
   addMessage: (chatId: number, message: Message) => void;
+  refreshData: () => Promise<void>;
 }
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
@@ -25,19 +30,80 @@ export const ChatProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const { user } = useAuth();
   const [currentChatId, setCurrentChatId] = useState<number | null>(null);
   const [messages, setMessages] = useState<Record<number, Message[]>>({});
+
+  // Debugging: Log messages state changes
+  useEffect(() => {
+    console.log('Messages state updated:', messages);
+  }, [messages]);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [chatOpen, setChatOpen] = useState(false);
   const [contactViewOpen, setContactViewOpen] = useState(false);
   const [users, setUsers] = useState<User[]>([]);
+  const [groups, setGroups] = useState<User[]>([]);
+  const navigate = useNavigate();
 
-  // Initialize users from data
+  const loadUsersAndMessages = async () => {
+    if (!user?.id) return;
+    
+    try {
+      // Fetch conversations from backend (this includes both users and groups)
+      const fetchedConversations = await messageService.fetchConversations(user.id);
+      
+      // Separate users and groups
+      const fetchedUsers = fetchedConversations.filter(conv => !conv.is_group);
+      const fetchedGroups = fetchedConversations.filter(conv => conv.is_group);
+      
+      setUsers(fetchedUsers);
+      setGroups(fetchedGroups);
+      
+      // For each conversation, fetch its messages
+      const conversationMessages: Record<number, Message[]> = {};
+      
+      for (const conversation of fetchedConversations) {
+        try {
+          const fetchedMessages = await messageService.fetchMessagesByConversationId(conversation.id);
+          
+          // Transform API messages to frontend Message type
+          // Ensure fetchedMessages is an array before calling map
+          conversationMessages[conversation.id] = (fetchedMessages || []).map(msg => ({
+            id: msg.id,
+            text: msg.text,
+            time: new Date(msg.created_at).toLocaleTimeString('en-US', { 
+              hour: '2-digit', 
+              minute: '2-digit',
+              hour12: false 
+            }),
+            isMe: msg.sender_id === user.id
+          }));
+        } catch (error) {
+          console.error(`Failed to load messages for conversation ${conversation.id}:`, error);
+          conversationMessages[conversation.id] = [];
+        }
+      }
+      
+      setMessages(conversationMessages);
+    } catch (error) {
+      console.error('Failed to load user data from backend:', error);
+      // Set empty arrays - no fallback to static data
+      setUsers([]);
+      setGroups([]);
+      setMessages({});
+    }
+  };
+
+  // Initialize users from backend API and refresh when user changes
   useEffect(() => {
-    // In a real app, you would fetch users from the server
-    // For now, we'll use the existing data
-    import('../../utils/data').then((module) => {
-      setUsers([...module.users, ...module.groups]);
-    });
-  }, []);
+    // Reset state when user changes
+    setUsers([]);
+    setGroups([]);
+    setMessages({});
+    setCurrentChatId(null);
+    
+    // Load data for new user
+    if (user?.id) {
+      loadUsersAndMessages();
+    }
+  }, [user?.id]);
 
   // Handle window resize
   useEffect(() => {
@@ -79,10 +145,15 @@ export const ChatProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }, [user]);
 
   const addMessage = (chatId: number, message: Message) => {
-    setMessages(prev => ({
-      ...prev,
-      [chatId]: [...(prev[chatId] || []), message]
-    }));
+    console.log('Adding message to chatId:', chatId, 'Message:', message);
+    setMessages(prev => {
+      const newMessages = {
+        ...prev,
+        [chatId]: [...(prev[chatId] || []), message]
+      };
+      console.log('Updated messages:', newMessages);
+      return newMessages;
+    });
   };
 
   const sendMessage = (text: string) => {
@@ -119,6 +190,8 @@ export const ChatProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const closeChat = () => {
     setChatOpen(false);
     setCurrentChatId(null);
+    // Navigate back to main view when closing chat
+    navigate('/');
   };
 
   const openContactView = () => {
@@ -129,11 +202,68 @@ export const ChatProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setContactViewOpen(false);
   };
 
-  const selectedUser = users.find(user => user.id === currentChatId) || null;
+  const refreshData = async () => {
+    if (!user?.id) return;
+    
+    try {
+      // Fetch conversations from backend (this includes both users and groups)
+      const fetchedConversations = await messageService.fetchConversations(user.id);
+      
+      // Separate users and groups
+      const fetchedUsers = fetchedConversations.filter(conv => !conv.is_group);
+      const fetchedGroups = fetchedConversations.filter(conv => conv.is_group);
+      
+      setUsers(fetchedUsers);
+      setGroups(fetchedGroups);
+      
+      // For each conversation, fetch its messages
+      const conversationMessages: Record<number, Message[]> = {};
+      
+      for (const conversation of fetchedConversations) {
+        try {
+          const fetchedMessages = await messageService.fetchMessagesByConversationId(conversation.id);
+          
+          // Transform API messages to frontend Message type
+          // Ensure fetchedMessages is an array before calling map
+          conversationMessages[conversation.id] = (fetchedMessages || []).map(msg => ({
+            id: msg.id,
+            text: msg.text,
+            time: new Date(msg.created_at).toLocaleTimeString('en-US', { 
+              hour: '2-digit', 
+              minute: '2-digit',
+              hour12: false 
+            }),
+            isMe: msg.sender_id === user.id
+          }));
+        } catch (error) {
+          console.error(`Failed to load messages for conversation ${conversation.id}:`, error);
+          conversationMessages[conversation.id] = [];
+        }
+      }
+      
+      setMessages(conversationMessages);
+    } catch (error) {
+      console.error('Failed to refresh data from backend:', error);
+    }
+  };
+
+  const selectedUser = [...users, ...groups].find(user => user.id === currentChatId) || null;
   const currentMessages = currentChatId ? messages[currentChatId] || [] : [];
+  
+  // Debugging: Log currentMessages
+  useEffect(() => {
+    console.log('Current chat ID:', currentChatId);
+    console.log('Messages object:', messages);
+    console.log('Current messages:', currentMessages);
+    
+    // Additional debugging to see what keys are available in messages
+    console.log('Available message keys:', Object.keys(messages));
+  }, [currentChatId, currentMessages, messages]);
 
   const value = {
     messages,
+    users,
+    groups,
     currentChatId,
     isMobile,
     chatOpen,
@@ -145,7 +275,8 @@ export const ChatProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     closeChat,
     openContactView,
     closeContactView,
-    addMessage
+    addMessage,
+    refreshData
   };
 
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;

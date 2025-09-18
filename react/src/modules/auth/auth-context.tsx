@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User } from '../../types';
 import * as authService from './auth-service';
+import { useNavigate } from 'react-router-dom';
 
 interface AuthContextType {
   user: User | null;
@@ -18,6 +19,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Check if user is already logged in
@@ -48,6 +50,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     try {
       const userData = await authService.login(username, password);
       setUser(userData);
+      // Use setTimeout to ensure state is updated before navigation
+      setTimeout(() => {
+        navigate('/');
+      }, 0);
     } catch (err: any) {
       setError(err.message || 'Login failed');
       throw err;
@@ -59,6 +65,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const logout = () => {
     setUser(null);
     authService.logout();
+    // Redirect to login page after logout
+    navigate('/login');
   };
 
   const register = async (userData: { username: string; password: string; displayName: string; avatarUrl?: string }) => {
@@ -68,6 +76,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       // Register the user
       const registeredUser = await authService.register(userData);
       setUser(registeredUser);
+      // Use setTimeout to ensure state is updated before navigation
+      setTimeout(() => {
+        navigate('/');
+      }, 0);
     } catch (err: any) {
       setError(err.message || 'Registration failed');
       throw err;

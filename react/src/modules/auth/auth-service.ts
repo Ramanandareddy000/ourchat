@@ -1,4 +1,4 @@
-import axiosInstance from '../../api/axiosInstance';
+import authService from '../../services/authService';
 
 interface CreateUserDto {
   username: string;
@@ -22,78 +22,126 @@ interface User {
   updated_at: string;
 }
 
-interface AuthResponse {
-  token: string;
-  user: User;
-}
-
 export const register = async (userData: CreateUserDto): Promise<User> => {
   try {
-    const response = await axiosInstance.post<AuthResponse>('/auth/register', {
+    const registerData = {
       username: userData.username,
       password: userData.password,
-      displayName: userData.displayName,
-      avatarUrl: userData.avatarUrl || undefined,
-    });
-
-    const { token, user } = response.data;
+      displayName: userData.displayName || userData.username
+    };
+    
+    const response = await authService.register(registerData);
+    
+    if (!response.success) {
+      throw new Error(response.message || 'Registration failed');
+    }
     
     // Store token in localStorage
-    localStorage.setItem('authToken', token);
+    if ('token' in response && response.token) {
+      localStorage.setItem('authToken', response.token);
+    }
     
-    return user;
+    // After registration, get the user profile
+    const currentUser = await authService.getCurrentUser();
+    if (currentUser) {
+      return {
+        id: parseInt(currentUser.id),
+        username: currentUser.username,
+        display_name: currentUser.displayName,
+        avatar_url: userData.avatarUrl || '',
+        image: undefined,
+        online: true,
+        last_seen: 'Online',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      };
+    } else {
+      throw new Error('Failed to get user profile after registration');
+    }
   } catch (error: any) {
     console.error('Registration error:', error);
-    throw new Error(error.response?.data?.message || 'Registration failed');
+    throw new Error(error.message || 'Registration failed');
   }
 };
 
 export const login = async (username: string, password: string): Promise<User> => {
   try {
-    const response = await axiosInstance.post<AuthResponse>('/auth/login', {
-      username,
-      password
-    });
-
-    const { token, user } = response.data;
+    const loginData = {
+      username: username,
+      password: password
+    };
+    
+    const response = await authService.login(loginData);
+    
+    if (!response.success) {
+      throw new Error(response.message || 'Login failed');
+    }
     
     // Store token in localStorage
-    localStorage.setItem('authToken', token);
+    if ('token' in response && response.token) {
+      localStorage.setItem('authToken', response.token);
+    }
     
-    // Return user with online status
-    return {
-      ...user,
-      online: true,
-      last_seen: 'Online'
-    };
+    // After login, get the user profile
+    const currentUser = await authService.getCurrentUser();
+    if (currentUser) {
+      return {
+        id: parseInt(currentUser.id),
+        username: currentUser.username,
+        display_name: currentUser.displayName,
+        avatar_url: '',
+        image: undefined,
+        online: true,
+        last_seen: 'Online',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      };
+    } else {
+      throw new Error('Failed to get user profile after login');
+    }
   } catch (error: any) {
     console.error('Login error:', error);
-    throw new Error(error.response?.data?.message || 'Login failed');
+    // Remove token if login failed
+    localStorage.removeItem('authToken');
+    throw new Error(error.message || 'Login failed');
   }
 };
 
 export const logout = (): void => {
-  localStorage.removeItem('authToken');
+  authService.logout();
 };
 
 export const getCurrentUser = async (): Promise<User | null> => {
   try {
-    const token = localStorage.getItem('authToken');
-    if (!token) {
+    if (!authService.isAuthenticated()) {
       return null;
     }
     
-    const response = await axiosInstance.get<{ user: User }>('/auth/me');
-    return response.data.user;
-  } catch (error) {
+    const currentUser = await authService.getCurrentUser();
+    if (currentUser) {
+      return {
+        id: parseInt(currentUser.id),
+        username: currentUser.username,
+        display_name: currentUser.displayName,
+        avatar_url: '',
+        image: undefined,
+        online: true,
+        last_seen: 'Online',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      };
+    }
+    return null;
+  } catch (error: any) {
     console.error('Get current user error:', error);
-    // If token is invalid, remove it
-    localStorage.removeItem('authToken');
+    // If token is invalid or expired, remove it
+    if (error.response?.status === 401) {
+      authService.logout();
+    }
     return null;
   }
 };
 
 export const isAuthenticated = (): boolean => {
-  const token = localStorage.getItem('authToken');
-  return !!token;
+  return authService.isAuthenticated();
 };

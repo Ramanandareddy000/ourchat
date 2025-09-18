@@ -18,7 +18,7 @@ interface FormErrors {
   general?: string;
 }
 
-const RegistrationPage: React.FC<{ onSwitchToLogin: () => void }> = ({ onSwitchToLogin }) => {
+const RegistrationPage: React.FC = () => {
   const [formData, setFormData] = useState<RegistrationFormData>({
     username: '',
     password: '',
@@ -198,7 +198,7 @@ const RegistrationPage: React.FC<{ onSwitchToLogin: () => void }> = ({ onSwitchT
         </form>
         
         <button 
-          onClick={onSwitchToLogin}
+          onClick={() => navigate('/login')}
           className="switch-link"
         >
           Already have an account? Login
