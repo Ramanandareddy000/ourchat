@@ -72,12 +72,6 @@ export const ChatUIScreen: React.FC = () => {
       window.removeEventListener('mouseup', stopResize);
     };
 
-    const startResize = (e: React.MouseEvent) => {
-      e.preventDefault();
-      setIsResizing(true);
-      window.addEventListener('mousemove', resize);
-      window.addEventListener('mouseup', stopResize);
-    };
 
     if (isResizing) {
       window.addEventListener('mousemove', resize);

@@ -12,13 +12,19 @@ const axiosInstance = axios.create({
   },
 });
 
-// Request interceptor to add token to headers
+// Request interceptor to add token and language to headers
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('authToken');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+
+    // Add language preference to headers
+    const language = localStorage.getItem('i18nextLng') || 'en';
+    config.headers['Accept-Language'] = language;
+    config.headers['x-custom-lang'] = language;
+
     return config;
   },
   (error) => {

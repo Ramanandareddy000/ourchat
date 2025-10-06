@@ -13,7 +13,7 @@ export const useSearch = () => {
       case 'groups':
         return groups;
       default:
-        return [...users, ...groups];
+        return users; // Only return users for "all" tab, groups are handled separately
     }
   }, [currentTab, users, groups]);
 

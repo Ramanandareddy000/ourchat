@@ -1,0 +1,82 @@
+{
+  "app": {
+    "name": "పింగ్‌మీ",
+    "welcomeMessage": "పింగ్‌మీకి స్వాగతం",
+    "selectChatMessage": "సందేశాలు పంపడానికి చాట్ ఎంచుకోండి"
+  },
+  "navigation": {
+    "chats": "చాట్‌లు",
+    "notifications": "నోటిఫికేషన్‌లు",
+    "groups": "గ్రూప్‌లు",
+    "profile": "ప్రొఫైల్",
+    "settings": "సెట్టింగ్‌లు",
+    "logout": "లాగ్ అవుట్",
+    "all": "అన్నీ",
+    "online": "ఆన్‌లైన్"
+  },
+  "auth": {
+    "loginTitle": "పింగ్‌మీకి లాగిన్ చేయండి",
+    "registerTitle": "నమోదు చేసుకోండి",
+    "username": "వినియోగదారు పేరు",
+    "displayName": "ప్రదర్శన పేరు",
+    "password": "పాస్‌వర్డ్",
+    "login": "లాగిన్",
+    "register": "నమోదు",
+    "loginPrompt": "ఖాతా లేదా? నమోదు చేసుకోండి",
+    "registerPrompt": "ఇప్పటికే ఖాతా ఉందా? లాగిన్ చేయండి",
+    "alreadyHaveAccount": "ఇప్పటికే ఖాతా ఉందా? లాగిన్ చేయండి",
+    "welcomeBack": "స్వాగతం, {{name}}",
+    "invalidCredentials": "తప్పుడు వివరాలు",
+    "userNotFound": "వినియోగదారు కనుగొనబడలేదు",
+    "registrationFailed": "నమోదు విఫలమైంది. దయచేసి మళ్లీ ప్రయత్నించండి.",
+    "validationFailed": "వ్యాలిడేషన్ విఫలమైంది",
+    "avatar_url": "అవతార్ URL (ఐచ్చికం)",
+    "avatarPlaceholder": "https://example.com/avatar.jpg",
+    "validation": {
+      "usernameRequired": "వినియోగదారు పేరు అవసరం",
+      "usernameMinLength": "వినియోగదారు పేరు కనీసం 3 అక్షరాలు ఉండాలి",
+      "passwordRequired": "పాస్‌వర్డ్ అవసరం",
+      "passwordMinLength": "పాస్‌వర్డ్ కనీసం 6 అక్షరాలు ఉండాలి",
+      "displayNameRequired": "ప్రదర్శన పేరు అవసరం",
+      "invalidUrl": "దయచేసి చెల్లుబాటు అయ్యే URL నమోదు చేయండి"
+    }
+  },
+  "chat": {
+    "typeMessage": "సందేశం టైప్ చేయండి",
+    "searchChats": "చాట్‌లను వెతకండి...",
+    "noMessages": "ఇంకా సందేశాలు లేవు",
+    "attachFile": "ఫైల్ అటాచ్ చేయండి",
+    "takePhoto": "ఫోటో తీయండి",
+    "sendMessage": "సందేశం పంపండి",
+    "addParticipant": "భాగస్వామిని జోడించండి",
+    "selectChatFirst": "దయచేసి మొదట చాట్ ఎంచుకోండి.",
+    "userAddedSuccess": "వినియోగదారు విజయవంతంగా జోడించబడ్డారు!"
+  },
+  "actions": {
+    "add": "జోడించు",
+    "cancel": "రద్దు చేయి",
+    "delete": "తొలగించు",
+    "edit": "సవరించు",
+    "save": "సేవ్ చేయి",
+    "close": "మూసివేయి",
+    "back": "వెనుకకు",
+    "next": "తర్వాత",
+    "previous": "మునుపటి",
+    "search": "వెతకండి",
+    "loading": "లోడవుతోంది..."
+  },
+  "errors": {
+    "general": "ఏదో తప్పు జరిగింది",
+    "networkError": "నెట్‌వర్క్ ఎర్రర్ జరిగింది",
+    "unauthorized": "మీకు అధికారం లేదు",
+    "notFound": "రిసోర్స్ కనుగొనబడలేదు",
+    "validationError": "దయచేసి మీ ఇన్‌పుట్ తనిఖీ చేయండి",
+    "serverError": "సర్వర్ ఎర్రర్ జరిగింది"
+  },
+  "language": {
+    "select": "భాష ఎంచుకోండి",
+    "english": "ఇంగ్లీష్",
+    "telugu": "తెలుగు",
+    "hindi": "హిందీ"
+  }
+}

@@ -171,4 +171,26 @@ export class UserService implements IUsersService {
       throw error;
     }
   }
+
+  async updateOnlineStatus(userId: number, isOnline: boolean): Promise<void> {
+    try {
+      this.logger.log(`Updating online status for user ${userId}: ${isOnline}`);
+      await this.userModel.update(
+        {
+          online: isOnline,
+          last_seen: isOnline ? null : new Date().toISOString(),
+        },
+        {
+          where: { id: userId },
+        },
+      );
+      this.logger.log(`Online status updated for user ${userId}`);
+    } catch (error) {
+      this.logger.error(
+        `Error updating online status for user ${userId}:`,
+        error,
+      );
+      throw error;
+    }
+  }
 }

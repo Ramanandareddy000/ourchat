@@ -1,0 +1,60 @@
+### Variables
+@baseUrl = http://localhost:3002/api
+# Update this token from login response in 02-auth.http
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsInVzZXJuYW1lIjoicmFqdSIsImlhdCI6MTcyNjY5MDM5NCwiZXhwIjoxNzI2Nzc2Nzk0fQ.5YzQGTUqR4wGQN_H0HMQv1o6b_cg8KfTR6fZH_z6kdc
+
+### ===========================================
+### PROFILE ENDPOINTS (Requires Authentication)
+### ===========================================
+
+### Get Current User Profile (Valid Token)
+GET {{baseUrl}}/profile/me
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### Expected Response:
+### {
+###   "user": {
+###     "id": 1,
+###     "username": "raja",
+###     "display_name": "Raja Kumar",
+###     "avatar_url": null,
+###     "created_at": "2025-09-17T19:42:44.236Z",
+###     "updated_at": "2025-09-17T19:42:44.236Z"
+###   }
+### }
+
+###
+
+### Get Profile with Invalid Token
+GET {{baseUrl}}/profile/me
+Authorization: Bearer invalid_token_here
+Accept: application/json
+
+### Expected Response: 401 Unauthorized
+
+###
+
+### Get Profile without Token
+GET {{baseUrl}}/profile/me
+Accept: application/json
+
+### Expected Response: 401 Unauthorized
+
+###
+
+### Get Profile with Malformed Authorization Header
+GET {{baseUrl}}/profile/me
+Authorization: invalid_format
+Accept: application/json
+
+### Expected Response: 401 Unauthorized
+
+###
+
+### Get Profile with Expired Token
+GET {{baseUrl}}/profile/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoidGVzdCIsImlhdCI6MTYwMDAwMDAwMCwiZXhwIjoxNjAwMDAwMDAwfQ.expired_token_signature
+Accept: application/json
+
+### Expected Response: 401 Unauthorized

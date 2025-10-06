@@ -21,7 +21,6 @@ interface APIConversation {
   created_at: string;
   updated_at: string;
   display_name?: string;
-  participants?: User[];
   participant_count?: number;
 }
 
@@ -33,14 +32,17 @@ class MessageService extends BaseService {
   // Fetch all users
   async fetchUsers(): Promise<User[]> {
     try {
-      const response = await this.fetchData<User[]>("/users");
+      const response = await axiosInstance.get<User[]>("/users");
+      // The API returns User[] directly, not wrapped in ApiResponse
+      const users = response.data || [];
+      console.log("Fetched users from API:", users);
+
       // Map the API response to match our frontend User type
-      // Ensure response.data is an array before calling map
-      return (response.data || []).map((user) => ({
+      return users.map((user: any) => ({
         id: user.id,
         username: user.username,
         display_name: user.display_name,
-        avatar_url: user.avatar_url || "",
+        avatar_url: user.avatar_url,
         image: user.image,
         online: user.online || false,
         last_seen: user.last_seen || "Never seen",
@@ -55,6 +57,45 @@ class MessageService extends BaseService {
     }
   }
 
+  // Add participant to a conversation
+  async addParticipant(params: { chat_id: number; user_id?: number; username?: string }): Promise<{ id: number; chat_id: number; user_id: number; added_at: string }>{
+    try {
+      const response = await axiosInstance.post(`/chat-participants/add`, params);
+      if (response.data?.success) {
+        return response.data.participant;
+      }
+      throw new Error(response.data?.error || 'Failed to add participant');
+    } catch (error: any) {
+      const msg = error?.response?.data?.error || error?.message || 'Failed to add participant';
+      throw new Error(msg);
+    }
+  }
+
+  // Start a new conversation with a user
+  async startConversation(params: {
+    current_user_id: number;
+    target_user_id?: number;
+    target_username?: string;
+  }): Promise<{
+    id: number;
+    name: string | null;
+    is_group: boolean;
+    created_by: number | null;
+    created_at: string;
+    is_existing: boolean;
+  }> {
+    try {
+      const response = await axiosInstance.post(`/chat/start-conversation`, params);
+      if (response.data?.success) {
+        return response.data.conversation;
+      }
+      throw new Error(response.data?.error || 'Failed to start conversation');
+    } catch (error: any) {
+      const msg = error?.response?.data?.error || error?.message || 'Failed to start conversation';
+      throw new Error(msg);
+    }
+  }
+
   // Fetch conversations for a user
   async fetchConversations(userId: number): Promise<User[]> {
     try {
@@ -65,12 +106,28 @@ class MessageService extends BaseService {
       
       // Ensure response.data is an array before calling map
       const conversations = response.data || [];
-      
+
       // Debugging: Log the conversations
       console.log('Fetched conversations:', conversations);
-      
+
+      // Deduplicate conversations by conversation ID and also by participant combination for 1:1 chats
+      const uniqueConversations = conversations.filter((conversation, index, self) => {
+        // For groups, deduplicate by ID only
+        if (conversation.is_group) {
+          return index === self.findIndex(c => c.id === conversation.id);
+        }
+
+        // For 1:1 chats, deduplicate by both ID and display_name to prevent multiple entries for same user
+        return index === self.findIndex(c =>
+          c.id === conversation.id ||
+          (!c.is_group && c.display_name === conversation.display_name && c.display_name)
+        );
+      });
+
+      console.log('Deduplicated conversations:', uniqueConversations);
+
       // Map conversations to the User type expected by the frontend
-      return conversations.map((conversation) => {
+      return uniqueConversations.map((conversation) => {
         // For groups, use the conversation name and ID
         // For 1:1 chats, we need to determine the other participant's ID and name
         let displayName, user_id;
@@ -88,18 +145,25 @@ class MessageService extends BaseService {
           // of the other participant in the conversation
         }
 
+        const userOnlineStatus = conversation.is_group ? true : (conversation.online || false);
+
+        // Debug logging for online status
+        if (!conversation.is_group) {
+          console.log(`User ${displayName}: API online=${conversation.online}, mapped online=${userOnlineStatus}`);
+        }
+
         return {
           id: user_id,
           username:
             displayName?.toLowerCase().replace(/\s+/g, "_") ||
             `user_${user_id}`,
           display_name: displayName || "Unknown User",
-          avatar_url: conversation.is_group ? "" : "",
+          avatar_url: conversation.is_group ? "" : null,
           image: undefined,
-          online: conversation.is_group ? true : false, // Groups are always considered "online"
+          online: userOnlineStatus, // Groups are always "online", users use actual status
           last_seen: conversation.is_group
             ? `${conversation.participant_count || 0} members`
-            : "Recently",
+            : (conversation.last_seen || "Recently"),
           phone: undefined,
           about: undefined,
           is_group: conversation.is_group,
@@ -121,6 +185,17 @@ class MessageService extends BaseService {
       return response.data || [];
     } catch (error) {
       console.error("Error fetching messages:", error);
+      throw error;
+    }
+  }
+
+  // Fetch messages for a specific user
+  async fetchMessagesByUserId(userId: number): Promise<APIMessage[]> {
+    try {
+      const response = await this.fetchData<APIMessage[]>(`/user/${userId}`);
+      return response.data || [];
+    } catch (error) {
+      console.error(`Error fetching messages for user ${userId}:`, error);
       throw error;
     }
   }
@@ -178,6 +253,7 @@ class MessageService extends BaseService {
       throw error;
     }
   }
+
 }
 
 // Export a singleton instance

@@ -52,9 +52,17 @@
           font-weight: 500;
         }
 
-        span {
-          color: #6c757d;
+        .status {
           font-size: 13px;
+          transition: color 0.3s ease;
+
+          &.online {
+            color: #28a745; // Green for online
+          }
+
+          &.offline {
+            color: #6c757d; // Gray for offline/last seen
+          }
         }
       }
     }

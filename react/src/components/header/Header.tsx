@@ -1,81 +1,84 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './Header.scss';
-import { useAuth } from '../../modules/auth';
-import { KebabMenu } from '../dialog';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import "./Header.scss";
+import { useAuth } from "../../modules/auth";
+import { KebabMenu } from "../dialog";
+
 
 export const Header: React.FC = () => {
   const { user } = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  
+
   useEffect(() => {
     const checkIsMobile = () => {
       setIsMobile(window.innerWidth <= 768);
     };
-    
+
     checkIsMobile();
-    window.addEventListener('resize', checkIsMobile);
-    
+    window.addEventListener("resize", checkIsMobile);
+
     return () => {
-      window.removeEventListener('resize', checkIsMobile);
+      window.removeEventListener("resize", checkIsMobile);
     };
   }, []);
-  
+
   const handleNavigation = (path: string) => {
     navigate(path);
     setIsMenuOpen(false);
   };
-  
+
   const menuItems = [
-    { 
-      label: 'Chats', 
-      onClick: () => handleNavigation('/') 
+    {
+      label: t("navigation.chats"),
+      onClick: () => handleNavigation("/"),
     },
-    { 
-      label: 'Notifications', 
-      onClick: () => handleNavigation('/notifications') 
+    {
+      label: t("navigation.notifications"),
+      onClick: () => handleNavigation("/notifications"),
     },
-    { 
-      label: 'Groups', 
-      onClick: () => handleNavigation('/groups') 
+    {
+      label: t("navigation.groups"),
+      onClick: () => handleNavigation("/groups"),
     },
-    { type: 'divider' },
-    { 
-      label: 'Profile', 
-      onClick: () => handleNavigation('/profile') 
+    { type: "divider" as const },
+    {
+      label: t("navigation.profile"),
+      onClick: () => handleNavigation("/profile"),
     },
-    { 
-      label: 'Settings', 
-      onClick: () => handleNavigation('/settings') 
+    {
+      label: t("navigation.settings"),
+      onClick: () => handleNavigation("/settings"),
     },
-    { type: 'divider' },
-    { 
-      label: 'Logout', 
+    { type: "divider" as const },
+    {
+      label: t("navigation.logout"),
       onClick: () => {
-        console.log('Logout clicked');
+        console.log("Logout clicked");
         setIsMenuOpen(false);
-      }
-    }
+      },
+    },
   ];
-  
+
   return (
     <div className="sidebar-header">
       <div className="header-content">
-        <img src="/LOGO.svg" alt="PingMe Logo" className="logo" />
+        <img src="/LOGO.svg" alt={`${t("app.name")} Logo`} className="logo" />
         <div className="app-name">
-          Ping<span className="accent">Me</span>
+          {t("app.name")}
         </div>
       </div>
+
+      
       {user && (
         <div className="user-info">
-          <span className="welcome-text">
-            Welcome, {user.display_name}
-          </span>
+          <span className="welcome-text">{t("auth.welcomeBack", { name: user.display_name })}</span>
           {isMobile && (
-            <KebabMenu 
-              isOpen={isMenuOpen} 
+            <KebabMenu
+              isOpen={isMenuOpen}
               onToggle={() => setIsMenuOpen(!isMenuOpen)}
               menuItems={menuItems}
             />

@@ -1,0 +1,1 @@
+export { I18nTest } from './I18nTest';

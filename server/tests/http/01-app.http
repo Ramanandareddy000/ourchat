@@ -1,0 +1,13 @@
+### Variables
+@baseUrl = http://localhost:3002/api
+
+### ===========================================
+### APPLICATION HEALTH CHECK
+### ===========================================
+
+### Get Application Hello Message
+GET {{baseUrl}}/
+Accept: application/json
+
+### Expected Response:
+### "Hello World!"

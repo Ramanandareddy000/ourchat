@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import './TabNavigation.scss';
 
 interface TabNavigationProps {
@@ -7,10 +8,11 @@ interface TabNavigationProps {
 }
 
 export const TabNavigation: React.FC<TabNavigationProps> = ({ currentTab, onTabChange }) => {
+  const { t } = useTranslation();
   const tabs = [
-    { id: 'all', label: 'All' },
-    { id: 'online', label: 'Online' },
-    { id: 'groups', label: 'Groups' }
+    { id: 'all', label: t('navigation.all') },
+    { id: 'online', label: t('navigation.online') },
+    { id: 'groups', label: t('navigation.groups') }
   ] as const;
 
   return (

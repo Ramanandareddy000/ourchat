@@ -36,6 +36,38 @@
     }
   }
 
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .header-language-switcher {
+      .language-trigger {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.3);
+        color: variables.$white;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.3);
+          border-color: rgba(255, 255, 255, 0.4);
+        }
+      }
+
+      .dropdown-arrow {
+        color: rgba(255, 255, 255, 0.8);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header-language-switcher {
+        .language-trigger {
+          padding: 6px 8px;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+
   .user-info {
     display: flex;
     align-items: center;

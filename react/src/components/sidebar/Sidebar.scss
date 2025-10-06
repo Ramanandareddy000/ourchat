@@ -28,9 +28,41 @@
     cursor: col-resize;
     z-index: 10;
     transition: background 0.3s;
-    
+
     &:hover {
       background: variables.$primary-color;
+    }
+  }
+
+  .sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+
+    h3 {
+      margin: 0;
+      color: #333;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .header-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+
+      .action-buttons {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .header-right {
+        display: flex;
+        align-items: center;
+      }
     }
   }
 }

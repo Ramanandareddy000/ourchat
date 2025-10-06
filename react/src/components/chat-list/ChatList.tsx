@@ -10,15 +10,18 @@ interface ChatListProps {
   messages: Record<number, any[]>;
 }
 
-export const ChatList: React.FC<ChatListProps> = ({ 
-  users, 
-  currentChatId, 
-  onChatSelect, 
-  messages 
+export const ChatList: React.FC<ChatListProps> = ({
+  users,
+  currentChatId,
+  onChatSelect,
+  messages
 }) => {
+  // Filter out groups to prevent duplication - ChatList should only show individual users
+  const actualUsers = users.filter(user => !user.is_group);
+
   return (
     <div className="chat-list">
-      {users.map((user) => {
+      {actualUsers.map((user) => {
         // For conversations, we want to show the last message
         const lastMessage = messages[user.id]?.length 
           ? messages[user.id][messages[user.id].length - 1] 

@@ -2,15 +2,15 @@ export interface User {
   id: number;
   username: string;
   display_name: string;
-  avatar_url: string;
+  avatar_url?: string;
   image?: string;
-  online: boolean;
-  last_seen: string;
+  online?: boolean;
+  last_seen?: string;
   phone?: string;
   about?: string;
   is_group?: boolean;
-  created_at: string;
-  updated_at: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface Message {

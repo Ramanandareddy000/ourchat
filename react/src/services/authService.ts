@@ -15,7 +15,8 @@ export interface RegisterData {
 export interface User {
   id: number;
   username: string;
-  displayName: string;
+  display_name: string;
+  avatar_url?: string;
 }
 
 export interface AuthResponse {
@@ -41,14 +42,15 @@ class AuthService extends BaseService {
       // Store token in localStorage
       localStorage.setItem('authToken', token);
       
-      return { 
-        success: true, 
+      return {
+        success: true,
         user: user ? {
           id: typeof user.id === 'string' ? parseInt(user.id, 10) : user.id,
           username: user.username || loginData.username,
-          displayName: user.displayName || user.username || loginData.username
+          display_name: user.display_name || user.username || loginData.username,
+          avatar_url: user.avatar_url
         } : undefined,
-        token 
+        token
       };
     } catch (error: any) {
       return { 
@@ -73,14 +75,15 @@ class AuthService extends BaseService {
       // Store token in localStorage
       localStorage.setItem('authToken', token);
       
-      return { 
-        success: true, 
+      return {
+        success: true,
         user: user ? {
           id: typeof user.id === 'string' ? parseInt(user.id, 10) : user.id,
           username: user.username || registerData.username,
-          displayName: user.displayName || user.username || registerData.username
+          display_name: user.display_name || user.username || registerData.username,
+          avatar_url: user.avatar_url
         } : undefined,
-        token 
+        token
       };
     } catch (error: any) {
       return { 
@@ -101,9 +104,11 @@ class AuthService extends BaseService {
       return {
         id: typeof userData.id === 'string' ? parseInt(userData.id, 10) : userData.id,
         username: userData.username,
-        displayName: userData.displayName || userData.display_name || userData.username
+        display_name: userData.display_name || userData.username,
+        avatar_url: userData.avatar_url
       };
     } catch (error) {
+      console.error('Error getting current user:', error);
       return null;
     }
   }

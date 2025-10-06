@@ -1,0 +1,244 @@
+// Internationalization styles
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap');
+
+// Global font families with multilingual support
+:root {
+  --font-family-base: 'Inter', 'Noto Sans Telugu', 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  --font-family-telugu: 'Noto Sans Telugu', 'Noto Sans', Arial, sans-serif;
+  --font-family-hindi: 'Noto Sans Devanagari', 'Noto Sans', Arial, sans-serif;
+}
+
+// Base font configuration
+html {
+  font-family: var(--font-family-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+// Telugu language specific styles
+html[lang="te"],
+html.lang-te,
+.lang-te {
+  font-family: var(--font-family-telugu);
+
+  // Ensure proper Telugu character rendering
+  font-feature-settings: 'kern' 1, 'liga' 1;
+  -webkit-font-feature-settings: 'kern' 1, 'liga' 1;
+
+  // Better line height for Telugu script
+  line-height: 1.6;
+
+  // Specific Telugu text elements
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-family-telugu);
+    font-weight: 600;
+  }
+
+  button, input, textarea, select {
+    font-family: var(--font-family-telugu);
+  }
+}
+
+// Hindi language specific styles
+html[lang="hi"],
+html.lang-hi,
+.lang-hi {
+  font-family: var(--font-family-hindi);
+
+  // Ensure proper Devanagari character rendering
+  font-feature-settings: 'kern' 1, 'liga' 1, 'deva' 1;
+  -webkit-font-feature-settings: 'kern' 1, 'liga' 1, 'deva' 1;
+
+  // Better line height for Devanagari script
+  line-height: 1.7;
+
+  // Specific Hindi text elements
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-family-hindi);
+    font-weight: 600;
+  }
+
+  button, input, textarea, select {
+    font-family: var(--font-family-hindi);
+  }
+}
+
+// RTL (Right-to-Left) support
+html[dir="rtl"],
+html.rtl,
+.rtl {
+  direction: rtl;
+  text-align: right;
+
+  // Flip margins and padding
+  * {
+    margin-left: unset !important;
+    margin-right: unset !important;
+    padding-left: unset !important;
+    padding-right: unset !important;
+  }
+
+  // RTL-specific layout adjustments
+  .sidebar {
+    border-left: none;
+    border-right: 1px solid var(--border-color);
+  }
+
+  .chat-area {
+    .message-bubble {
+      &.sent {
+        margin-left: auto;
+        margin-right: 0;
+        border-radius: 18px 18px 5px 18px;
+
+        &::after {
+          right: auto;
+          left: -8px;
+          border-right-color: transparent;
+          border-left-color: var(--primary-color);
+        }
+      }
+
+      &.received {
+        margin-left: 0;
+        margin-right: auto;
+        border-radius: 18px 18px 18px 5px;
+
+        &::after {
+          left: auto;
+          right: -8px;
+          border-left-color: transparent;
+          border-right-color: var(--bg-secondary);
+        }
+      }
+    }
+  }
+
+  // Language switcher RTL
+  .language-switcher {
+    .language-dropdown {
+      left: auto;
+      right: 0;
+    }
+
+    .language-option {
+      flex-direction: row-reverse;
+      text-align: right;
+    }
+  }
+
+  // Header RTL adjustments
+  .sidebar-header {
+    .header-content {
+      flex-direction: row-reverse;
+    }
+
+    .header-actions {
+      order: -1;
+    }
+  }
+}
+
+// Language-specific font optimizations
+.lang-te {
+  // Telugu text spacing and kerning
+  letter-spacing: 0.01em;
+  word-spacing: 0.05em;
+
+  // Better rendering for complex Telugu scripts
+  font-variant-ligatures: common-ligatures;
+  font-variant-numeric: proportional-nums;
+
+  // Ensure proper Telugu conjunct rendering
+  .message-text,
+  .chat-input,
+  .search-input {
+    font-feature-settings: 'akhn' 1, 'blwf' 1, 'half' 1, 'pstf' 1, 'vatu' 1;
+  }
+}
+
+.lang-hi {
+  // Hindi text spacing and kerning
+  letter-spacing: 0.02em;
+  word-spacing: 0.08em;
+
+  // Better rendering for Devanagari scripts
+  font-variant-ligatures: common-ligatures;
+  font-variant-numeric: proportional-nums;
+
+  // Ensure proper Devanagari character rendering
+  .message-text,
+  .chat-input,
+  .search-input {
+    font-feature-settings: 'deva' 1, 'kern' 1, 'liga' 1, 'calt' 1;
+  }
+}
+
+// High DPI/Retina display optimizations for Telugu and Hindi
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .lang-te {
+    -webkit-font-smoothing: subpixel-antialiased;
+    -moz-osx-font-smoothing: auto;
+  }
+
+  .lang-hi {
+    -webkit-font-smoothing: subpixel-antialiased;
+    -moz-osx-font-smoothing: auto;
+  }
+}
+
+// Dark mode adjustments for internationalization
+@media (prefers-color-scheme: dark) {
+  .lang-te {
+    // Better contrast for Telugu text in dark mode
+    color: #f0f0f0;
+
+    input, textarea {
+      color: #f0f0f0;
+      background: rgba(255, 255, 255, 0.05);
+    }
+  }
+
+  .lang-hi {
+    // Better contrast for Hindi text in dark mode
+    color: #f0f0f0;
+
+    input, textarea {
+      color: #f0f0f0;
+      background: rgba(255, 255, 255, 0.05);
+    }
+  }
+}
+
+// Mobile responsive adjustments
+@media (max-width: 768px) {
+  html[lang="te"],
+  html.lang-te {
+    // Slightly larger text on mobile for better Telugu readability
+    font-size: 16px;
+
+    .message-text {
+      font-size: 15px;
+      line-height: 1.5;
+    }
+  }
+
+  html[lang="hi"],
+  html.lang-hi {
+    // Slightly larger text on mobile for better Hindi readability
+    font-size: 16px;
+
+    .message-text {
+      font-size: 15px;
+      line-height: 1.6;
+    }
+  }
+}
+
+// Language transition animations
+.language-transitioning {
+  * {
+    transition: font-family 0.3s ease, direction 0.3s ease;
+  }
+}

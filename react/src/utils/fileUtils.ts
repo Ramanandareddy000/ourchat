@@ -14,7 +14,12 @@ export const handleFileUpload = (accept: string, capture?: string): Promise<File
   });
 };
 
+const FILE_ICONS = {
+  CAMERA: '📷',
+  ATTACHMENT: '📎'
+} as const;
+
 export const formatFileMessage = (file: File, type: 'attachment' | 'camera'): string => {
-  const icon = type === 'camera' ? '📷' : '📎';
+  const icon = type === 'camera' ? FILE_ICONS.CAMERA : FILE_ICONS.ATTACHMENT;
   return `${icon} ${file.name}`;
 };

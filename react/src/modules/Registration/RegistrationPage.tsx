@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../auth';
+import { LanguageSwitcher } from '../../components/language-switcher';
 import './RegistrationPage.scss';
 
 interface RegistrationFormData {
@@ -19,42 +21,42 @@ interface FormErrors {
 }
 
 const RegistrationPage: React.FC = () => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState<RegistrationFormData>({
     username: '',
     password: '',
     displayName: '',
     avatarUrl: '',
   });
-  
+
   const [errors, setErrors] = useState<FormErrors>({});
   const { register, isLoading, error } = useAuth();
-  const navigate = useNavigate();
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
     
     // Username validation
     if (!formData.username.trim()) {
-      newErrors.username = 'Username is required';
+      newErrors.username = t('auth.validation.usernameRequired');
     } else if (formData.username.length < 3) {
-      newErrors.username = 'Username must be at least 3 characters';
+      newErrors.username = t('auth.validation.usernameMinLength');
     }
-    
+
     // Password validation
     if (!formData.password) {
-      newErrors.password = 'Password is required';
+      newErrors.password = t('auth.validation.passwordRequired');
     } else if (formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
+      newErrors.password = t('auth.validation.passwordMinLength');
     }
-    
+
     // Display name validation
     if (!formData.displayName.trim()) {
-      newErrors.displayName = 'Display name is required';
+      newErrors.displayName = t('auth.validation.displayNameRequired');
     }
-    
+
     // Avatar URL validation (if provided)
     if (formData.avatarUrl && !isValidUrl(formData.avatarUrl)) {
-      newErrors.avatarUrl = 'Please enter a valid URL';
+      newErrors.avatarUrl = t('auth.validation.invalidUrl');
     }
     
     setErrors(newErrors);
@@ -101,11 +103,10 @@ const RegistrationPage: React.FC = () => {
         };
         
         await register(userData);
-        // Navigate to the home page after successful registration
-        navigate('/');
+        // Navigation will be handled by auth context
       } catch (error: any) {
         setErrors({
-          general: error.message || 'Registration failed. Please try again.'
+          general: error.message || t('auth.registrationFailed')
         });
       }
     }
@@ -113,8 +114,11 @@ const RegistrationPage: React.FC = () => {
 
   return (
     <div className="registration-page">
+      <div className="language-switcher-container">
+        <LanguageSwitcher />
+      </div>
       <div className="registration-form-container">
-        <h1>Create Account</h1>
+        <h1>{t('auth.register')}</h1>
         
         {(error || errors.general) && (
           <div className="error-message general">
@@ -124,7 +128,7 @@ const RegistrationPage: React.FC = () => {
         
         <form onSubmit={handleSubmit} className="registration-form">
           <div className="form-group">
-            <label htmlFor="username">UserName</label>
+            <label htmlFor="username">{t('auth.username')}</label>
             <input
               id="username"
               type="text"
@@ -139,7 +143,7 @@ const RegistrationPage: React.FC = () => {
           </div>
           
           <div className="form-group">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">{t('auth.password')}</label>
             <input
               id="password"
               type="password"
@@ -154,7 +158,7 @@ const RegistrationPage: React.FC = () => {
           </div>
           
           <div className="form-group">
-            <label htmlFor="displayName">Display Name</label>
+            <label htmlFor="displayName">{t('auth.displayName')}</label>
             <input
               id="displayName"
               type="text"
@@ -169,7 +173,7 @@ const RegistrationPage: React.FC = () => {
           </div>
           
           <div className="form-group">
-            <label htmlFor="avatarUrl">Avatar URL (optional)</label>
+            <label htmlFor="avatarUrl">{t('auth.avatar_url')}</label>
             <input
               id="avatarUrl"
               type="text"
@@ -177,7 +181,7 @@ const RegistrationPage: React.FC = () => {
               value={formData.avatarUrl}
               onChange={handleChange}
               className={errors.avatarUrl ? 'error' : ''}
-              placeholder="https://example.com/avatar.jpg"
+              placeholder={t('auth.avatarPlaceholder')}
             />
             {errors.avatarUrl && (
               <div className="error-message">{errors.avatarUrl}</div>
@@ -192,17 +196,16 @@ const RegistrationPage: React.FC = () => {
             {isLoading ? (
               <div className="spinner"></div>
             ) : (
-              'Register'
+              t('auth.register')
             )}
           </button>
         </form>
         
-        <button 
-          onClick={() => navigate('/login')}
-          className="switch-link"
-        >
-          Already have an account? Login
-        </button>
+        <div className="switch-link">
+          <Link to="/login">
+            {t('auth.alreadyHaveAccount')}
+          </Link>
+        </div>
       </div>
     </div>
   );

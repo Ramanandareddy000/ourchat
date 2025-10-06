@@ -1,0 +1,35 @@
+### Variables
+@baseUrl = http://localhost:3002/api
+
+### ===========================================
+### CLEANUP TEST DATA
+### ===========================================
+### WARNING: These endpoints will delete data!
+### Only run these if you want to clean up test data
+
+### Delete Test Messages
+# DELETE {{baseUrl}}/messages/245
+# DELETE {{baseUrl}}/messages/246
+
+### Delete Test Users (be very careful!)
+# DELETE {{baseUrl}}/users/999
+
+### ===========================================
+### DATA VERIFICATION
+### ===========================================
+
+### Check Remaining Users
+GET {{baseUrl}}/users
+Accept: application/json
+
+###
+
+### Check Remaining Messages
+GET {{baseUrl}}/messages
+Accept: application/json
+
+###
+
+### Check Application Health
+GET {{baseUrl}}/../
+Accept: application/json

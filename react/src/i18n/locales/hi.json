@@ -1,0 +1,82 @@
+{
+  "app": {
+    "name": "पिंगमी",
+    "welcomeMessage": "पिंगमी में आपका स्वागत है",
+    "selectChatMessage": "संदेश भेजना शुरू करने के लिए चैट चुनें"
+  },
+  "navigation": {
+    "chats": "चैट्स",
+    "notifications": "सूचनाएं",
+    "groups": "समूह",
+    "profile": "प्रोफ़ाइल",
+    "settings": "सेटिंग्स",
+    "logout": "लॉगआउट",
+    "all": "सभी",
+    "online": "ऑनलाइन"
+  },
+  "auth": {
+    "loginTitle": "पिंगमी में लॉगिन करें",
+    "registerTitle": "पंजीकरण करें",
+    "username": "उपयोगकर्ता नाम",
+    "displayName": "प्रदर्शन नाम",
+    "password": "पासवर्ड",
+    "login": "लॉगिन",
+    "register": "पंजीकरण",
+    "loginPrompt": "खाता नहीं है? पंजीकरण करें",
+    "registerPrompt": "पहले से खाता है? लॉगिन करें",
+    "alreadyHaveAccount": "पहले से खाता है? लॉगिन करें",
+    "welcomeBack": "स्वागत है, {{name}}",
+    "invalidCredentials": "अमान्य क्रेडेंशियल",
+    "userNotFound": "उपयोगकर्ता नहीं मिला",
+    "registrationFailed": "पंजीकरण असफल। कृपया पुनः प्रयास करें।",
+    "validationFailed": "सत्यापन असफल",
+    "avatar_url": "अवतार URL (वैकल्पिक)",
+    "avatarPlaceholder": "https://example.com/avatar.jpg",
+    "validation": {
+      "usernameRequired": "उपयोगकर्ता नाम आवश्यक है",
+      "usernameMinLength": "उपयोगकर्ता नाम कम से कम 3 अक्षर का होना चाहिए",
+      "passwordRequired": "पासवर्ड आवश्यक है",
+      "passwordMinLength": "पासवर्ड कम से कम 6 अक्षर का होना चाहिए",
+      "displayNameRequired": "प्रदर्शन नाम आवश्यक है",
+      "invalidUrl": "कृपया एक वैध URL दर्ज करें"
+    }
+  },
+  "chat": {
+    "typeMessage": "संदेश टाइप करें",
+    "searchChats": "चैट्स खोजें...",
+    "noMessages": "अभी तक कोई संदेश नहीं",
+    "attachFile": "फ़ाइल संलग्न करें",
+    "takePhoto": "फोटो लें",
+    "sendMessage": "संदेश भेजें",
+    "addParticipant": "सदस्य जोड़ें",
+    "selectChatFirst": "कृपया पहले चैट चुनें।",
+    "userAddedSuccess": "उपयोगकर्ता सफलतापूर्वक जोड़ा गया!"
+  },
+  "actions": {
+    "add": "जोड़ें",
+    "cancel": "रद्द करें",
+    "delete": "हटाएं",
+    "edit": "संपादित करें",
+    "save": "सेव करें",
+    "close": "बंद करें",
+    "back": "वापस",
+    "next": "अगला",
+    "previous": "पिछला",
+    "search": "खोजें",
+    "loading": "लोड हो रहा है..."
+  },
+  "errors": {
+    "general": "कुछ गलत हुआ",
+    "networkError": "नेटवर्क त्रुटि हुई",
+    "unauthorized": "आपको अधिकार नहीं है",
+    "notFound": "संसाधन नहीं मिला",
+    "validationError": "कृपया अपना इनपुट जांचें",
+    "serverError": "सर्वर त्रुटि हुई"
+  },
+  "language": {
+    "select": "भाषा चुनें",
+    "english": "अंग्रेजी",
+    "telugu": "तेलुगू",
+    "hindi": "हिंदी"
+  }
+}

@@ -74,10 +74,15 @@ async function checkDatabase() {
         });
 
         // Get sample data from conversations table
-        const conversationsData = await sequelize.query('SELECT * FROM conversations ORDER BY id DESC LIMIT 10', {
-          type: sequelize.QueryTypes.SELECT,
-        });
-        console.log(`\nFound ${conversationsData.length} recent conversations in the table:`);
+        const conversationsData = await sequelize.query(
+          'SELECT * FROM conversations ORDER BY id DESC LIMIT 10',
+          {
+            type: sequelize.QueryTypes.SELECT,
+          },
+        );
+        console.log(
+          `\nFound ${conversationsData.length} recent conversations in the table:`,
+        );
         conversationsData.forEach((conversation) => {
           console.log(
             `  ID: ${conversation.id}, Name: ${conversation.name}, Is Group: ${conversation.is_group}, Created By: ${conversation.created_by}`,
@@ -104,7 +109,9 @@ async function checkDatabase() {
       );
 
       if (participantsTable.length > 0) {
-        console.log('Conversation participants table exists with the following structure:');
+        console.log(
+          'Conversation participants table exists with the following structure:',
+        );
         participantsTable.forEach((column) => {
           console.log(
             `  ${column.column_name}: ${column.data_type} (nullable: ${column.is_nullable})`,
@@ -112,20 +119,30 @@ async function checkDatabase() {
         });
 
         // Get sample data from conversation_participants table
-        const participantsData = await sequelize.query('SELECT * FROM conversation_participants ORDER BY id DESC LIMIT 20', {
-          type: sequelize.QueryTypes.SELECT,
-        });
-        console.log(`\nFound ${participantsData.length} recent participants in the table:`);
+        const participantsData = await sequelize.query(
+          'SELECT * FROM conversation_participants ORDER BY id DESC LIMIT 20',
+          {
+            type: sequelize.QueryTypes.SELECT,
+          },
+        );
+        console.log(
+          `\nFound ${participantsData.length} recent participants in the table:`,
+        );
         participantsData.forEach((participant) => {
           console.log(
             `  ID: ${participant.id}, Conversation ID: ${participant.conversation_id}, User ID: ${participant.user_id}, Role: ${participant.role}`,
           );
         });
       } else {
-        console.log('Conversation participants table does not exist or is empty.');
+        console.log(
+          'Conversation participants table does not exist or is empty.',
+        );
       }
     } catch (error) {
-      console.log('Error checking conversation participants table:', error.message);
+      console.log(
+        'Error checking conversation participants table:',
+        error.message,
+      );
     }
 
     // Check if messages table exists and get its structure
@@ -150,10 +167,15 @@ async function checkDatabase() {
         });
 
         // Get sample data from messages table
-        const messagesData = await sequelize.query('SELECT * FROM messages ORDER BY id DESC LIMIT 30', {
-          type: sequelize.QueryTypes.SELECT,
-        });
-        console.log(`\nFound ${messagesData.length} recent messages in the table:`);
+        const messagesData = await sequelize.query(
+          'SELECT * FROM messages ORDER BY id DESC LIMIT 30',
+          {
+            type: sequelize.QueryTypes.SELECT,
+          },
+        );
+        console.log(
+          `\nFound ${messagesData.length} recent messages in the table:`,
+        );
         messagesData.forEach((message) => {
           console.log(
             `  ID: ${message.id}, Text: ${message.text}, Sender: ${message.sender_id}, Conversation: ${message.conversation_id}`,

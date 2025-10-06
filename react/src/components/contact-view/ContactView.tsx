@@ -1,6 +1,7 @@
 import React from 'react';
 import { User } from '../../types';
 import { Avatar } from '../avatar/Avatar';
+import { AppIcons } from '../../ui/icons';
 import './ContactView.scss';
 
 interface ContactViewProps {
@@ -25,15 +26,15 @@ export const ContactView: React.FC<ContactViewProps> = ({ user, onClose }) => {
       
       <div className="contact-actions">
         <div className="action-row">
-          <span className="icon">📞</span>
+          <span className="icon"><AppIcons.Phone fontSize="small" /></span>
           <span>Call</span>
         </div>
         <div className="action-row">
-          <span className="icon">📹</span>
+          <span className="icon"><AppIcons.VideoCall fontSize="small" /></span>
           <span>Video call</span>
         </div>
         <div className="action-row">
-          <span className="icon">🔍</span>
+          <span className="icon"><AppIcons.Search fontSize="small" /></span>
           <span>Search</span>
         </div>
       </div>

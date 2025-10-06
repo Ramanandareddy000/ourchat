@@ -1,5 +1,6 @@
 import React from 'react';
-import './SearchBar.scss';
+import { useTranslation } from 'react-i18next';
+import { SearchInput } from '../../ui';
 
 interface SearchBarProps {
   value: string;
@@ -7,18 +8,13 @@ interface SearchBarProps {
 }
 
 export const SearchBar: React.FC<SearchBarProps> = ({ value, onChange }) => {
+  const { t } = useTranslation();
   return (
-    <div className="search-container">
-      <div className="search-input-container">
-        <span className="search-icon">🔍</span>
-        <input
-          type="text"
-          className="search-input"
-          placeholder="Search chats..."
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-        />
-      </div>
-    </div>
+    <SearchInput
+      value={value}
+      onChange={onChange}
+      placeholder={t("chat.searchChats")}
+      size="small"
+    />
   );
 };

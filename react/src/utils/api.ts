@@ -22,9 +22,9 @@ export const registerUser = async (userData: CreateUserDto): Promise<User> => {
 
     if (response.success && response.user) {
       return {
-        id: parseInt(response.user.id),
+        id: parseInt(response.user.id.toString(), 10),
         username: userData.username,
-        display_name: response.user.displayName,
+        display_name: response.user.display_name,
         avatar_url: userData.avatarUrl || "",
         image: undefined,
         online: true,

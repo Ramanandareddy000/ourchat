@@ -1,7 +1,7 @@
 import React from 'react';
 import { User } from '../../types';
-import { Avatar } from '../avatar/Avatar';
-import './OnlineUsers.scss';
+import { UserCard } from '../../ui';
+import { Box, Typography } from '@mui/material';
 
 interface OnlineUsersProps {
   users: User[];
@@ -9,32 +9,48 @@ interface OnlineUsersProps {
   onChatSelect: (userId: number) => void;
 }
 
-export const OnlineUsers: React.FC<OnlineUsersProps> = ({ 
-  users, 
-  currentChatId, 
-  onChatSelect 
+export const OnlineUsers: React.FC<OnlineUsersProps> = ({
+  users,
+  currentChatId,
+  onChatSelect
 }) => {
-  // Filter to show only online users (for 1:1 chats, we consider all users as online for simplicity)
-  // In a real app, this would be based on actual online status from the backend
-  const onlineUsers = users.filter(user => !user.is_group);
+  // Filter to show only online users
+  const onlineUsers = users.filter(user =>
+    !user.is_group && user.online === true
+  );
+
+  if (onlineUsers.length === 0) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        py={4}
+        px={2}
+      >
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          textAlign="center"
+        >
+          No users are currently online
+        </Typography>
+      </Box>
+    );
+  }
 
   return (
-    <div className="online-users-list">
+    <Box className="online-users-list">
       {onlineUsers.map((user) => (
-        <div
+        <UserCard
           key={user.id}
-          className={`online-user-item ${currentChatId === user.id ? 'active' : ''}`}
+          user={user}
+          isActive={currentChatId === user.id}
           onClick={() => onChatSelect(user.id)}
-        >
-          <div className="avatar-container">
-            <Avatar user={user} size={49} />
-          </div>
-          <div className="user-info">
-            <div className="name">{user.display_name}</div>
-            <div className="status">{user.last_seen}</div>
-          </div>
-        </div>
+          showOnlineStatus={true}
+          lastMessage={user.last_seen ? `Last seen: ${user.last_seen}` : 'Online now'}
+        />
       ))}
-    </div>
+    </Box>
   );
 };

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Avatar } from '../avatar';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../modules/auth';
+import { AppAvatar, AppButton, AppTextInput } from '../../ui';
+import { ArrowBack as ArrowBackIcon, Edit as EditIcon } from '@mui/icons-material';
+import { Box, Typography, Paper } from '@mui/material';
 import './Profile.scss';
 
 export const Profile: React.FC = () => {
@@ -35,15 +37,20 @@ export const Profile: React.FC = () => {
   return (
     <div className="profile-panel">
       <div className="profile-header">
-        <button className="back-button" onClick={handleBack}>
-          ←
-        </button>
-        <h2 className="profile-title">Profile</h2>
+        <AppButton
+          variant="ghost"
+          size="small"
+          startIcon={<ArrowBackIcon />}
+          onClick={handleBack}
+        >
+          Back
+        </AppButton>
+        <Typography variant="h5" className="profile-title">Profile</Typography>
       </div>
 
       <div className="profile-content">
         <div className="profile-avatar-section">
-          <Avatar user={user} size={100} />
+          <AppAvatar user={user} size={100} />
         </div>
 
         <div className="profile-info-section">
@@ -51,22 +58,32 @@ export const Profile: React.FC = () => {
             <div className="info-label">Name</div>
             {isEditingName ? (
               <div className="edit-container">
-                <input
-                  type="text"
-                  value={displayName}
-                  onChange={(e) => setDisplayName(e.target.value)}
-                  className="edit-input"
-                />
-                <button className="save-button" onClick={handleSaveName}>
-                  Save
-                </button>
+                <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+                  <AppTextInput
+                    value={displayName}
+                    onChange={(e) => setDisplayName(e.target.value)}
+                    size="small"
+                    fullWidth
+                  />
+                  <AppButton
+                    variant="primary"
+                    size="small"
+                    onClick={handleSaveName}
+                  >
+                    Save
+                  </AppButton>
+                </Box>
               </div>
             ) : (
               <div className="info-value">
                 <span>{displayName}</span>
-                <button className="edit-button" onClick={() => setIsEditingName(true)}>
-                  ✏️
-                </button>
+                <AppButton
+                  variant="ghost"
+                  size="small"
+                  onClick={() => setIsEditingName(true)}
+                >
+                  <EditIcon fontSize="small" />
+                </AppButton>
               </div>
             )}
           </div>
@@ -75,22 +92,32 @@ export const Profile: React.FC = () => {
             <div className="info-label">Status</div>
             {isEditingStatus ? (
               <div className="edit-container">
-                <input
-                  type="text"
-                  value={status}
-                  onChange={(e) => setStatus(e.target.value)}
-                  className="edit-input"
-                />
-                <button className="save-button" onClick={handleSaveStatus}>
-                  Save
-                </button>
+                <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+                  <AppTextInput
+                    value={status}
+                    onChange={(e) => setStatus(e.target.value)}
+                    size="small"
+                    fullWidth
+                  />
+                  <AppButton
+                    variant="primary"
+                    size="small"
+                    onClick={handleSaveStatus}
+                  >
+                    Save
+                  </AppButton>
+                </Box>
               </div>
             ) : (
               <div className="info-value">
                 <span>{status || 'No status set'}</span>
-                <button className="edit-button" onClick={() => setIsEditingStatus(true)}>
-                  ✏️
-                </button>
+                <AppButton
+                  variant="ghost"
+                  size="small"
+                  onClick={() => setIsEditingStatus(true)}
+                >
+                  <EditIcon fontSize="small" />
+                </AppButton>
               </div>
             )}
           </div>
@@ -115,9 +142,13 @@ export const Profile: React.FC = () => {
         </div>
 
         <div className="logout-section">
-          <button className="logout-button" onClick={logout}>
+          <AppButton
+            variant="danger"
+            onClick={logout}
+            fullWidth
+          >
             Logout
-          </button>
+          </AppButton>
         </div>
       </div>
     </div>

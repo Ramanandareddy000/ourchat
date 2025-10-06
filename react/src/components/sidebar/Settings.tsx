@@ -7,9 +7,12 @@ import {
   Storage as StorageIcon,
   Help as HelpIcon,
   Logout as LogoutIcon,
+  ChevronRight as ChevronRightIcon,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../modules/auth";
+import { AppButton, AppAvatar } from "../../ui";
+import { Typography, Box, Paper, List, ListItem, ListItemIcon, ListItemText, Divider } from "@mui/material";
 import "./Settings.scss";
 
 export const Settings: React.FC = () => {
@@ -114,10 +117,15 @@ export const Settings: React.FC = () => {
   return (
     <div className="settings-panel" ref={settingsRef}>
       <div className="settings-header">
-        <button className="back-button" onClick={handleBack}>
-          <BackIcon />
-        </button>
-        <h2>Settings</h2>
+        <AppButton
+          variant="ghost"
+          size="small"
+          startIcon={<BackIcon />}
+          onClick={handleBack}
+        >
+          Back
+        </AppButton>
+        <Typography variant="h5">Settings</Typography>
       </div>
 
       <div className="settings-content">
@@ -125,17 +133,15 @@ export const Settings: React.FC = () => {
         <div className="settings-section profile-section">
           <div className="profile-header">
             <div className="profile-avatar">
-              {userProfile.avatar ? (
-                <img src={userProfile.avatar} alt="Profile" />
+              {user ? (
+                <AppAvatar user={user} size={64} />
               ) : (
-                <div className="avatar-placeholder">
-                  <ProfileIcon />
-                </div>
+                <AppAvatar user={{} as any} size={64} />
               )}
             </div>
             <div className="profile-info">
-              <h3>{userProfile.name}</h3>
-              <p>{userProfile.status}</p>
+              <Typography variant="h6">{userProfile.name}</Typography>
+              <Typography variant="body2" color="text.secondary">{userProfile.status}</Typography>
             </div>
           </div>
         </div>
@@ -145,18 +151,18 @@ export const Settings: React.FC = () => {
           <div key={section.id} className="settings-section">
             <div className="section-header">
               <div className="section-icon">{section.icon}</div>
-              <h3>{section.title}</h3>
+              <Typography variant="h6">{section.title}</Typography>
             </div>
             <div className="section-items">
               {section.items.map((item) => (
                 <div key={item.id} className="settings-item">
                   <div className="item-content">
-                    <div className="item-title">{item.title}</div>
+                    <Typography variant="body1">{item.title}</Typography>
                     {item.description && (
-                      <div className="item-description">{item.description}</div>
+                      <Typography variant="body2" color="text.secondary">{item.description}</Typography>
                     )}
                   </div>
-                  <div className="item-arrow">›</div>
+                  <ChevronRightIcon color="action" />
                 </div>
               ))}
             </div>
@@ -165,14 +171,14 @@ export const Settings: React.FC = () => {
 
         {/* Logout Button */}
         <div className="settings-section logout-section">
-          <div className="settings-item logout-item" onClick={handleLogout}>
-            <div className="item-content">
-              <div className="item-title">Logout</div>
-            </div>
-            <div className="item-icon">
-              <LogoutIcon />
-            </div>
-          </div>
+          <AppButton
+            variant="danger"
+            startIcon={<LogoutIcon />}
+            onClick={handleLogout}
+            fullWidth
+          >
+            Logout
+          </AppButton>
         </div>
       </div>
     </div>

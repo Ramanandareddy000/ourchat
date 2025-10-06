@@ -10,15 +10,18 @@ interface GroupsProps {
   messages: Record<number, any[]>;
 }
 
-export const Groups: React.FC<GroupsProps> = ({ 
-  groups, 
-  currentChatId, 
+export const Groups: React.FC<GroupsProps> = ({
+  groups,
+  currentChatId,
   onChatSelect,
   messages
 }) => {
+  // Filter to ensure we only show actual groups
+  const actualGroups = groups.filter(group => group.is_group);
+
   return (
     <div className="groups-list">
-      {groups.map((group) => {
+      {actualGroups.map((group) => {
         // Get last message for the group
         const lastMessage = messages[group.id]?.length 
           ? messages[group.id][messages[group.id].length - 1] 

@@ -1,0 +1,18 @@
+{
+  "errors": {
+    "messageNotFound": "Message not found",
+    "chatNotFound": "Chat not found",
+    "userNotInChat": "User is not part of this chat",
+    "messageRequired": "Message content is required",
+    "unauthorized": "You are not authorized to perform this action",
+    "participantNotFound": "Participant not found",
+    "alreadyInChat": "User is already in this chat"
+  },
+  "success": {
+    "messageSent": "Message sent successfully",
+    "participantAdded": "Participant added successfully",
+    "participantRemoved": "Participant removed successfully",
+    "chatCreated": "Chat created successfully",
+    "chatUpdated": "Chat updated successfully"
+  }
+}

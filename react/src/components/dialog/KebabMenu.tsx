@@ -1,9 +1,10 @@
-import React, { useRef, useEffect } from 'react';
-import './KebabMenu.scss';
+import React from 'react';
+import { MoreVert as MoreVertIcon } from '@mui/icons-material';
+import { AppMenu, MenuItemConfig } from '../../ui';
 
 interface MenuItem {
   label?: string;
-  icon?: string;
+  icon?: string | React.ReactElement;
   onClick?: () => void;
   type?: 'item' | 'divider';
 }
@@ -14,54 +15,25 @@ interface KebabMenuProps {
   menuItems: MenuItem[];
 }
 
-export const KebabMenu: React.FC<KebabMenuProps> = ({ 
-  isOpen, 
+export const KebabMenu: React.FC<KebabMenuProps> = ({
+  isOpen,
   onToggle,
   menuItems
 }) => {
-  const menuRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        onToggle();
-      }
-    };
-
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isOpen, onToggle]);
+  // Convert old MenuItem format to new MenuItemConfig format
+  const convertedMenuItems: MenuItemConfig[] = menuItems.map(item => ({
+    label: item.label,
+    icon: item.icon ? (typeof item.icon === 'string' ? <span>{item.icon}</span> : item.icon) : undefined,
+    onClick: item.onClick,
+    type: item.type,
+  }));
 
   return (
-    <div className="kebab-menu-wrapper" ref={menuRef}>
-      <button className="kebab-button" onClick={onToggle}>
-        ⋮
-      </button>
-      {isOpen && (
-        <div className="kebab-menu">
-          {menuItems.map((item, index) => {
-            if (item.type === 'divider') {
-              return <div key={index} className="menu-divider" />;
-            }
-            
-            return (
-              <button 
-                key={index} 
-                className="menu-item"
-                onClick={item.onClick}
-              >
-                {item.icon && <span className="menu-icon">{item.icon}</span>}
-                {item.label}
-              </button>
-            );
-          })}
-        </div>
-      )}
-    </div>
+    <AppMenu
+      menuItems={convertedMenuItems}
+      open={isOpen}
+      onToggle={onToggle}
+      triggerIcon={<MoreVertIcon />}
+    />
   );
 };

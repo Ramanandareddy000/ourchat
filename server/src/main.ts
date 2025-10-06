@@ -5,6 +5,9 @@ import { ConfigService } from '@nestjs/config';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // Set global API prefix
+  app.setGlobalPrefix('api');
+
   // Enable CORS for development and production
   app.enableCors({
     origin: [

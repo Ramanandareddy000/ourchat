@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { User, Message } from '../../types';
 import { ChatHeader } from '../chat-header/ChatHeader';
 import { MessageList } from '../message-list/MessageList';
@@ -27,6 +28,7 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
   contactViewOpen,
   onCloseContactView
 }) => {
+  const { t } = useTranslation();
   // Debugging: Log the props
   useEffect(() => {
     console.log('ChatArea props:', { selectedUser, messages });
@@ -36,7 +38,11 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
     return (
       <div className="chat-area">
         <div className="no-chat">
-          Select a chat to start messaging
+          <div className="no-chat-icon">
+            <img src="/chatarea.svg" alt={t("app.welcomeMessage")} width="300" height="300" />
+          </div>
+          <h2>{t("app.welcomeMessage")}</h2>
+          <p>{t("app.selectChatMessage")}</p>
         </div>
       </div>
     );

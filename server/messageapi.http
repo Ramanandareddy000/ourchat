@@ -1,0 +1,58 @@
+# Message API Endpoints
+# This file contains HTTP requests for testing all message endpoints
+# For detailed documentation about each endpoint's purpose and frontend usage,
+# see the MESSAGE_API_DOCS.md file in this directory
+
+### 1. Create a new message
+# Purpose: Creates a new message in a conversation
+# Frontend: Triggered when a user sends a new message in the chat interface
+POST http://localhost:3000/messages
+Content-Type: application/json
+
+{
+  "text": "Hello, this is a test message",
+  "sender_id": 1,
+  "conversation_id": 1
+}
+
+### 2. Get all messages
+# Purpose: Retrieves all messages in the system (admin functionality)
+# Frontend: Admin dashboard for viewing all messages across the platform
+GET http://localhost:3000/messages
+
+### 3. Get a message by ID
+# Purpose: Retrieves a specific message by its unique identifier
+# Frontend: Loading a specific message when navigating directly to it
+GET http://localhost:3000/messages/1
+
+### 4. Get messages by user ID
+# Purpose: Retrieves all messages sent by or received by a specific user
+# Frontend: User's message history page or profile page
+GET http://localhost:3000/messages/user/30
+
+### 5. Get conversations for a user
+# Purpose: Retrieves all conversations that a user is participating in
+# Frontend: Main chat interface - conversation list in the sidebar
+GET http://localhost:3000/messages/user/1/conversations
+
+### 6. Get messages by conversation ID
+# Purpose: Retrieves all messages within a specific conversation
+# Frontend: Main chat window - displays the message history for the active conversation
+GET http://localhost:3000/messages/conversation/1
+
+### 7. Update a message
+# Purpose: Updates an existing message (editing functionality)
+# Frontend: When a user edits their message
+PUT http://localhost:3000/messages/1
+Content-Type: application/json
+
+{
+  "text": "Updated message content",
+  "sender_id": 1,
+  "conversation_id": 1
+}
+
+### 8. Delete a message
+# Purpose: Deletes a message from the system
+# Frontend: When a user deletes their message
+DELETE http://localhost:3000/messages/1

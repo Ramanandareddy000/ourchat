@@ -6,6 +6,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import { ChatUIScreen } from './modules';
 import { AuthProvider } from './modules/auth';
 import { ChatProvider } from './modules/chat';
+import { I18nTest } from './components/i18n-test';
 import './App.scss';
 
 // Simple dashboard component for demonstration
@@ -81,6 +82,7 @@ const App: React.FC = () => {
               <Dashboard />
             </ProtectedRoute>
           } />
+          <Route path="/i18n-test" element={<I18nTest />} />
           <Route path="/404" element={
             <ProtectedRoute>
               <Dashboard />

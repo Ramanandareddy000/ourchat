@@ -8,6 +8,14 @@
   width: 100%;
   background: variables.$background-light;
   padding: 20px;
+  position: relative;
+
+  .language-switcher-container {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 1000;
+  }
 
   .registration-form-container {
     background: variables.$white;

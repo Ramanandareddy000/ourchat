@@ -1,6 +1,6 @@
 import React from 'react';
 import { Message } from '../../types';
-import './MessageBubble.scss';
+import { AppMessageBubble } from '../../ui';
 
 interface MessageBubbleProps {
   message: Message;
@@ -9,14 +9,12 @@ interface MessageBubbleProps {
 
 export const MessageBubble: React.FC<MessageBubbleProps> = ({ message, showSender }) => {
   return (
-    <div className={`message ${message.isMe ? 'sent' : 'received'}`}>
-      <div className="message-bubble">
-        {showSender && message.sender && (
-          <div className="sender-name">{message.sender}</div>
-        )}
-        <div className="message-text">{message.text}</div>
-        <div className="message-time">{message.time}</div>
-      </div>
-    </div>
+    <AppMessageBubble
+      message={message.text}
+      timestamp={message.time}
+      isOwn={message.isMe}
+      sender={message.sender}
+      showSender={showSender}
+    />
   );
 };

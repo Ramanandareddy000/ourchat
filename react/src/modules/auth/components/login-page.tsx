@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { Typography, Box } from '@mui/material';
 import { useAuth } from '../auth-context';
-import './LoginPage.scss';
+import { AppContainer, FormField, AppButton, ErrorMessage } from '../../../ui';
+import { LanguageSwitcher } from '../../../components/language-switcher';
 
 interface LoginFormData {
   username: string;
@@ -9,13 +12,13 @@ interface LoginFormData {
 }
 
 export const LoginPage: React.FC = () => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState<LoginFormData>({
     username: '',
     password: '',
   });
-  
+
   const { login, isLoading, error } = useAuth();
-  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -27,7 +30,7 @@ export const LoginPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     try {
       await login(formData.username, formData.password);
       // Navigation is now handled in the auth context
@@ -38,61 +41,80 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="login-page">
-      <div className="login-form-container">
-        <h1>Login to PingMe</h1>
-        
+    <AppContainer maxWidth="sm" centered fullHeight>
+      <Box
+        sx={{
+          position: 'absolute',
+          top: 16,
+          right: 16,
+          zIndex: 1000,
+        }}
+      >
+        <LanguageSwitcher />
+      </Box>
+
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        sx={{
+          width: '100%',
+          maxWidth: 400,
+          p: 4,
+          borderRadius: 2,
+          boxShadow: (theme) => theme.shadows[3],
+          backgroundColor: 'background.paper',
+        }}
+      >
+        <Typography variant="h4" component="h1" align="center" gutterBottom>
+          {t("auth.loginTitle")}
+        </Typography>
+
         {error && (
-          <div className="error-message general">
-            {error}
-          </div>
+          <ErrorMessage message={error} sx={{ mb: 2 }} />
         )}
-        
-        <form onSubmit={handleSubmit} className="login-form">
-          <div className="form-group">
-            <label htmlFor="username">UserName</label>
-            <input
-              id="username"
-              type="text"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input
-              id="password"
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          
-          <button 
-            type="submit" 
-            disabled={isLoading}
-            className={isLoading ? 'loading' : ''}
-          >
-            {isLoading ? (
-              <div className="spinner"></div>
-            ) : (
-              'Login'
-            )}
-          </button>
-        </form>
-        
-        <button 
-          onClick={() => navigate('/register')}
-          className="switch-link"
+
+        <FormField
+          name="username"
+          label={t("auth.username")}
+          type="text"
+          value={formData.username}
+          onChange={handleChange}
+          required
+        />
+
+        <FormField
+          name="password"
+          label={t("auth.password")}
+          type="password"
+          value={formData.password}
+          onChange={handleChange}
+          required
+        />
+
+        <AppButton
+          type="submit"
+          variant="primary"
+          loading={isLoading}
+          disabled={isLoading}
+          fullWidth
+          sx={{ mt: 2, mb: 2 }}
         >
-          Don't have an account? Register
-        </button>
-      </div>
-    </div>
+          {t('auth.login')}
+        </AppButton>
+
+        <Typography align="center">
+          <Link
+            to="/register"
+            style={{
+              color: 'inherit',
+              textDecoration: 'underline',
+              cursor: 'pointer'
+            }}
+          >
+            {t("auth.loginPrompt")}
+          </Link>
+        </Typography>
+      </Box>
+    </AppContainer>
   );
 };

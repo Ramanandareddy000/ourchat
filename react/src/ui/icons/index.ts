@@ -1,0 +1,1 @@
+export { AppIcons, type AppIconKey } from './AppIcons';
