@@ -1,8 +1,93 @@
-// Base styles
-@use 'base/reset';
+// @use rules must come first
+@use 'variables';
+@use '../App.scss';
+@use '../components/sidebar/Sidebar.scss';
+@use '../components/sidebar/Settings.scss';
+@use '../components/header/Header.scss';
+@use '../components/search-bar/SearchBar.scss';
+@use '../components/tab-navigation/TabNavigation.scss';
+@use '../components/chat-list/ChatList.scss';
 
-// Component styles
-@use 'components/components';
-@use 'components/sidebar';
-@use 'components/chat-list';
-@use 'components/chat-area';
+@use '../components/chat-area/ChatArea.scss';
+@use '../components/chat-header/ChatHeader.scss';
+@use '../components/message-list/MessageList.scss';
+@use '../components/message-bubble/MessageBubble.scss';
+@use '../components/message-input/MessageInput.scss';
+
+@use '../components/avatar/Avatar.scss';
+@use '../components/vertical-icon-bar/VerticalIconBar.scss';
+
+@use '../modules/ChatUI/ChatUIScreen.scss';
+@use '../modules/ChatUI/NotificationsPage/NotificationsPage.scss';
+@use '../modules/ChatUI/GroupsPage/GroupsPage.scss';
+@use '../modules/ChatUI/GroupDetailPage/GroupDetailPage.scss';
+@use '../modules/Registration/RegistrationPage.scss';
+@use '../modules/auth/components/LoginPage.scss';
+
+// Google Fonts import
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+// Base styles
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+  background: variables.$background-light;
+  margin: 0;
+  padding: 0;
+  color: variables.$text-primary;
+}
+
+#root {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  background: variables.$background-light;
+  margin: 0;
+  padding: 0;
+}
+
+// Global focus styles using Qwen's highlight color
+:focus {
+  outline: 2px solid variables.$highlight-color;
+  outline-offset: 2px;
+}
+
+// Scrollbar styling to match Qwen theme
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: variables.$background-medium;
+}
+
+::-webkit-scrollbar-thumb {
+  background: variables.$primary-color;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: variables.$primary-hover;
+}
+
+// Button styles
+button {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+// Input styles
+input, textarea {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}

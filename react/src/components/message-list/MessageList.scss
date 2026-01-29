@@ -1,0 +1,66 @@
+@use '../../styles/variables.scss';
+
+.messages-container {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background: variables.$background-light;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.no-messages {
+  text-align: center;
+  color: #999;
+  font-style: italic;
+  padding: 20px;
+}
+
+.date-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.date-separator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 16px 0 8px 0;
+  position: relative;
+
+  &::before {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #e0e0e0;
+    margin-right: 12px;
+  }
+
+  &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #e0e0e0;
+    margin-left: 12px;
+  }
+}
+
+.date-text {
+  background: variables.$background-light;
+  color: #666;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 12px;
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.messages-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}

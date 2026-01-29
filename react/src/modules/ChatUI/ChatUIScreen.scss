@@ -1,0 +1,111 @@
+@use '../../styles/_variables';
+
+.chat-ui-screen {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background-color: variables.$background-light;
+  padding-left: 60px;
+
+  // Unified container for sidebar and chat area
+  .main-content-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .sidebar-container {
+    position: relative;
+    width: 30%;
+    min-width: 300px;
+    max-width: none;
+    height: 100%;
+    flex-shrink: 0;
+    display: flex;
+    
+    .sidebar {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  .chat-area {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    position: relative;
+  }
+
+  // Resizer handle between sidebar and chat area
+  .layout-resizer {
+    width: 5px;
+    height: 100%;
+    background: transparent;
+    cursor: col-resize;
+    z-index: 100;
+    transition: background 0.3s;
+    
+    &:hover {
+      background: variables.$primary-color;
+    }
+  }
+
+  // Overlay styles for different pages
+  .notifications-overlay,
+  .settings-overlay,
+  .profile-overlay,
+  .groups-overlay,
+  .group-detail-overlay,
+  .help-overlay,
+  .about-overlay,
+  .error-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: variables.$background-light;
+    z-index: 10;
+    height: 100%;
+    width: 100%;
+  }
+
+  @media (max-width: 768px) {
+    padding-left: 0;
+
+    .main-content-container {
+      height: 100%;
+      width: 100%;
+    }
+
+    &.chat-open .sidebar-container {
+      display: none;
+    }
+
+    &.chat-open .chat-area {
+      display: flex;
+      width: 100%;
+      height: 100%;
+    }
+
+    &:not(.chat-open) .chat-area {
+      display: none;
+    }
+
+    .sidebar-container {
+      width: 100%;
+      min-width: unset;
+      max-width: unset;
+    }
+
+    .chat-area {
+      width: 100%;
+    }
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "app": {
+    "name": "PingMe",
+    "welcomeMessage": "Welcome to PingMe",
+    "selectChatMessage": "Select a chat to start messaging"
+  },
+  "navigation": {
+    "chats": "Chats",
+    "notifications": "Notifications",
+    "groups": "Groups",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout",
+    "all": "All",
+    "online": "Online"
+  },
+  "auth": {
+    "loginTitle": "Login to PingMe",
+    "registerTitle": "Register",
+    "username": "Username",
+    "displayName": "Display Name",
+    "password": "Password",
+    "login": "Login",
+    "register": "Register",
+    "loginPrompt": "Don't have an account? Register",
+    "registerPrompt": "Already have an account? Login",
+    "alreadyHaveAccount": "Already have an account? Login",
+    "welcomeBack": "Welcome, {{name}}",
+    "invalidCredentials": "Invalid credentials",
+    "userNotFound": "User not found",
+    "registrationFailed": "Registration failed. Please try again.",
+    "validationFailed": "Validation failed",
+    "avatar_url": "Avatar URL (optional)",
+    "avatarPlaceholder": "https://example.com/avatar.jpg",
+    "validation": {
+      "usernameRequired": "Username is required",
+      "usernameMinLength": "Username must be at least 3 characters",
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "Password must be at least 6 characters",
+      "displayNameRequired": "Display name is required",
+      "invalidUrl": "Please enter a valid URL"
+    }
+  },
+  "chat": {
+    "typeMessage": "Type a message",
+    "searchChats": "Search chats...",
+    "noMessages": "No messages yet",
+    "attachFile": "Attach file",
+    "takePhoto": "Take photo",
+    "sendMessage": "Send message",
+    "startNewChat": "Start New Chat",
+    "startNewChatTooltip": "Start a new conversation with any user",
+    "addParticipant": "Add Participant",
+    "addParticipantTooltip": "Add a new member to this group chat",
+    "selectChatFirst": "Please select a chat first.",
+    "userAddedSuccess": "User added successfully!"
+  },
+  "actions": {
+    "add": "Add",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "save": "Save",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "search": "Search",
+    "loading": "Loading..."
+  },
+  "errors": {
+    "general": "Something went wrong",
+    "networkError": "Network error occurred",
+    "unauthorized": "You are not authorized",
+    "notFound": "Resource not found",
+    "validationError": "Please check your input",
+    "serverError": "Server error occurred"
+  },
+  "language": {
+    "select": "Select Language",
+    "english": "English",
+    "telugu": "Telugu",
+    "hindi": "Hindi"
+  }
+}

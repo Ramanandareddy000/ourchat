@@ -1,0 +1,18 @@
+{
+  "errors": {
+    "messageNotFound": "संदेश नहीं मिला",
+    "chatNotFound": "चैट नहीं मिली",
+    "userNotInChat": "उपयोगकर्ता इस चैट का सदस्य नहीं है",
+    "messageRequired": "संदेश की सामग्री आवश्यक है",
+    "unauthorized": "आपके पास इस कार्य को करने का अधिकार नहीं है",
+    "participantNotFound": "सदस्य नहीं मिला",
+    "alreadyInChat": "उपयोगकर्ता पहले से इस चैट में है"
+  },
+  "success": {
+    "messageSent": "संदेश सफलतापूर्वक भेजा गया",
+    "participantAdded": "सदस्य सफलतापूर्वक जोड़ा गया",
+    "participantRemoved": "सदस्य सफलतापूर्वक हटाया गया",
+    "chatCreated": "चैट सफलतापूर्वक बनाई गई",
+    "chatUpdated": "चैट सफलतापूर्वक अपडेट की गई"
+  }
+}

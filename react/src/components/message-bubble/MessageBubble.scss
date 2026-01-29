@@ -1,0 +1,54 @@
+@use '../../styles/variables.scss';
+
+.message {
+  display: flex;
+  margin-bottom: 10px;
+
+  &.sent {
+    justify-content: flex-end;
+
+    .message-bubble {
+      background: variables.$primary-color;
+      color: variables.$white;
+      border-top-right-radius: 0;
+    }
+  }
+
+  &.received {
+    justify-content: flex-start;
+
+    .message-bubble {
+      background: variables.$secondary-hover;
+      color: variables.$text-primary;
+      border-top-left-radius: 0;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+  }
+
+  .message-bubble {
+    max-width: 65%;
+    padding: 10px 15px;
+    border-radius: 18px;
+    position: relative;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+    .sender-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: variables.$primary-color;
+      margin-bottom: 4px;
+    }
+
+    .message-text {
+      margin-bottom: 4px;
+      line-height: 1.4;
+    }
+
+    .message-time {
+      font-size: 11px;
+      color: variables.$text-secondary;
+      text-align: right;
+      opacity: 0.8;
+    }
+  }
+}

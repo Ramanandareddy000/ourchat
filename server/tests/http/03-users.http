@@ -1,0 +1,119 @@
+### Variables
+@baseUrl = http://localhost:3002/api
+@testUserId = 1
+
+### ===========================================
+### USER MANAGEMENT ENDPOINTS
+### ===========================================
+
+### Create New User
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+  "username": "newuser_{{$randomInt}}",
+  "password": "securepassword123",
+  "displayName": "New User {{$randomInt}}",
+  "avatarUrl": "https://example.com/avatar.jpg"
+}
+
+### Expected Response: 201 Created with user object
+
+###
+
+### Create User with Validation Errors
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+  "username": "",
+  "password": "123",
+  "displayName": ""
+}
+
+### Expected Response: 400 Bad Request
+
+###
+
+### Get All Users
+GET {{baseUrl}}/users
+Accept: application/json
+
+### Expected Response: Array of user objects
+
+###
+
+### Get User by ID (Valid)
+GET {{baseUrl}}/users/{{testUserId}}
+Accept: application/json
+
+### Expected Response: User object
+
+###
+
+### Get User by ID (Invalid)
+GET {{baseUrl}}/users/99999
+Accept: application/json
+
+### Expected Response: 404 Not Found
+
+###
+
+### Get User by ID (Invalid Format)
+GET {{baseUrl}}/users/invalid
+Accept: application/json
+
+### Expected Response: 400 Bad Request
+
+###
+
+### Update User (Valid)
+PUT {{baseUrl}}/users/{{testUserId}}
+Content-Type: application/json
+
+{
+  "displayName": "Updated User Name",
+  "avatarUrl": "https://example.com/new-avatar.jpg"
+}
+
+### Expected Response: 200 OK with updated user object
+
+###
+
+### Update User (Invalid ID)
+PUT {{baseUrl}}/users/99999
+Content-Type: application/json
+
+{
+  "displayName": "Updated Name"
+}
+
+### Expected Response: 404 Not Found
+
+###
+
+### Update User (Validation Errors)
+PUT {{baseUrl}}/users/{{testUserId}}
+Content-Type: application/json
+
+{
+  "username": "",
+  "password": "12"
+}
+
+### Expected Response: 400 Bad Request
+
+###
+
+### Delete User (Valid)
+# Note: Be careful with this - it actually deletes the user
+# DELETE {{baseUrl}}/users/{{testUserId}}
+
+### Expected Response: 204 No Content
+
+###
+
+### Delete User (Invalid ID)
+DELETE {{baseUrl}}/users/99999
+
+### Expected Response: 404 Not Found

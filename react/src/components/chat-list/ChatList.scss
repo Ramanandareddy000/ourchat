@@ -1,0 +1,53 @@
+@use '../../styles/variables.scss';
+
+.chat-list {
+  overflow-y: auto;
+  height: calc(100vh - 180px);
+  flex: 1;
+
+  .chat-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    cursor: pointer;
+    border-bottom: 1px solid #f4f1fa; // Light purple tint for subtle separation
+    transition: all 0.3s ease-in-out; // Smooth transitions
+    position: relative;
+
+    &:hover {
+      background: #f4f1fa; // Light purple hover effect
+    }
+
+    &.active {
+      background: #e9e4f5; // More prominent highlight for active item
+      color: variables.$primary-color; // Purple text for active item
+      font-weight: 500; // Medium font weight for active item
+    }
+
+    // Remove border-bottom from the last chat item
+    &:last-child {
+      border-bottom: none;
+    }
+
+    .chat-info {
+      flex: 1;
+      margin-left: 15px;
+
+      .name {
+        color: variables.$text-primary;
+        font-size: 17px;
+        margin-bottom: 2px;
+        font-weight: 500;
+      }
+
+      .last-message {
+        color: variables.$text-secondary;
+        font-size: 14px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 200px;
+      }
+    }
+  }
+}

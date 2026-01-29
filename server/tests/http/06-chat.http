@@ -1,0 +1,307 @@
+### Variables
+@baseUrl = http://localhost:3002/api
+@senderId = 13
+@receiverId = 1
+@conversationId = 111
+@token = your_jwt_token_here
+
+### ===========================================
+### CHAT OPERATIONS
+### ===========================================
+
+### Send Direct Message (1:1 Chat)
+POST {{baseUrl}}/messages/send
+Content-Type: application/json
+
+{
+  "sender_id": {{senderId}},
+  "receiver_id": {{receiverId}},
+  "content": "Hello! This is a direct message."
+}
+
+### Expected Response:
+### {
+###   "success": true,
+###   "message": {
+###     "message_id": 245,
+###     "sender_id": 13,
+###     "receiver_id": 1,
+###     "content": "Hello! This is a direct message.",
+###     "timestamp": "2025-09-18T18:53:51.645Z",
+###     "conversation_id": 103
+###   }
+### }
+
+###
+
+### Send Group Message (Existing Conversation)
+POST {{baseUrl}}/messages/send
+Content-Type: application/json
+
+{
+  "sender_id": {{senderId}},
+  "conversation_id": {{conversationId}},
+  "content": "Hello everyone! This is a group message."
+}
+
+### Expected Response:
+### {
+###   "success": true,
+###   "message": {
+###     "message_id": 246,
+###     "sender_id": 13,
+###     "conversation_id": 111,
+###     "content": "Hello everyone! This is a group message.",
+###     "timestamp": "2025-09-18T18:53:51.645Z"
+###   }
+### }
+
+###
+
+### Send Message - Invalid Sender
+POST {{baseUrl}}/messages/send
+Content-Type: application/json
+
+{
+  "sender_id": 999,
+  "receiver_id": {{receiverId}},
+  "content": "This should fail - sender doesn't exist"
+}
+
+### Expected Response:
+### {
+###   "success": false,
+###   "error": "Sender does not exist."
+### }
+
+###
+
+### Send Message - Invalid Receiver
+POST {{baseUrl}}/messages/send
+Content-Type: application/json
+
+{
+  "sender_id": {{senderId}},
+  "receiver_id": 999,
+  "content": "This should fail - receiver doesn't exist"
+}
+
+### Expected Response:
+### {
+###   "success": false,
+###   "error": "Receiver does not exist."
+### }
+
+###
+
+### Send Message - Invalid Conversation
+POST {{baseUrl}}/messages/send
+Content-Type: application/json
+
+{
+  "sender_id": {{senderId}},
+  "conversation_id": 999999,
+  "content": "This should fail - conversation doesn't exist"
+}
+
+### Expected Response:
+### {
+###   "success": false,
+###   "error": "Conversation does not exist."
+### }
+
+###
+
+### Send Message - Empty Content
+POST {{baseUrl}}/messages/send
+Content-Type: application/json
+
+{
+  "sender_id": {{senderId}},
+  "receiver_id": {{receiverId}},
+  "content": ""
+}
+
+### Expected Response: 400 Bad Request
+### {
+###   "statusCode": 400,
+###   "message": "Message content cannot be empty",
+###   "error": "Bad Request"
+### }
+
+###
+
+### Send Message - Content Too Long
+POST {{baseUrl}}/messages/send
+Content-Type: application/json
+
+{
+  "sender_id": {{senderId}},
+  "receiver_id": {{receiverId}},
+  "content": "{{ 'x'.repeat(10001) }}"
+}
+
+### Expected Response: 400 Bad Request
+### Message content cannot exceed 10,000 characters
+
+###
+
+### Send Message - Missing Target
+POST {{baseUrl}}/messages/send
+Content-Type: application/json
+
+{
+  "sender_id": {{senderId}},
+  "content": "This should fail - no receiver or conversation specified"
+}
+
+### Expected Response: 400 Bad Request
+
+###
+
+### Send Message - Self Message
+POST {{baseUrl}}/messages/send
+Content-Type: application/json
+
+{
+  "sender_id": {{senderId}},
+  "receiver_id": {{senderId}},
+  "content": "Trying to send message to myself"
+}
+
+### Expected Response:
+### {
+###   "success": false,
+###   "error": "You cannot send a message to yourself."
+### }
+
+###
+
+### ===========================================
+### PARTICIPANT MANAGEMENT
+### ===========================================
+
+### Add Participant to Chat (by User ID)
+POST {{baseUrl}}/chat/participants
+Content-Type: application/json
+
+{
+  "chat_id": {{conversationId}},
+  "user_id": 8
+}
+
+### Expected Response:
+### {
+###   "success": true,
+###   "message": "User added to chat successfully",
+###   "participant": {
+###     "id": 123,
+###     "chat_id": 111,
+###     "user_id": 8,
+###     "added_at": "2025-09-18T..."
+###   }
+### }
+
+###
+
+### Add Participant to Chat (by Username)
+POST {{baseUrl}}/chat/participants
+Content-Type: application/json
+
+{
+  "chat_id": {{conversationId}},
+  "username": "raju"
+}
+
+### Expected Response:
+### {
+###   "success": true,
+###   "message": "User added to chat successfully",
+###   "participant": {
+###     "id": 124,
+###     "chat_id": 111,
+###     "user_id": 8,
+###     "added_at": "2025-09-18T..."
+###   }
+### }
+
+###
+
+### Add Participant - Invalid Chat ID
+POST {{baseUrl}}/chat/participants
+Content-Type: application/json
+
+{
+  "chat_id": 999999,
+  "user_id": 8
+}
+
+### Expected Response:
+### {
+###   "success": false,
+###   "error": "Chat does not exist."
+### }
+
+###
+
+### Add Participant - Invalid User ID
+POST {{baseUrl}}/chat/participants
+Content-Type: application/json
+
+{
+  "chat_id": {{conversationId}},
+  "user_id": 999
+}
+
+### Expected Response:
+### {
+###   "success": false,
+###   "error": "User with provided ID does not exist."
+### }
+
+###
+
+### Add Participant - Invalid Username
+POST {{baseUrl}}/chat/participants
+Content-Type: application/json
+
+{
+  "chat_id": {{conversationId}},
+  "username": "nonexistentuser"
+}
+
+### Expected Response:
+### {
+###   "success": false,
+###   "error": "User with username 'nonexistentuser' does not exist."
+### }
+
+###
+
+### Add Participant - Missing User Identifier
+POST {{baseUrl}}/chat/participants
+Content-Type: application/json
+
+{
+  "chat_id": {{conversationId}}
+}
+
+### Expected Response: 400 Bad Request
+### "Either user_id or username must be provided"
+
+###
+
+### Add Participant - Duplicate User
+POST {{baseUrl}}/chat/participants
+Content-Type: application/json
+
+{
+  "chat_id": {{conversationId}},
+  "user_id": {{senderId}}
+}
+
+### Expected Response:
+### {
+###   "success": false,
+###   "error": "User 'Display Name' is already a participant in this chat."
+### }

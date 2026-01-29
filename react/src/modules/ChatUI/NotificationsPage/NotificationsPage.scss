@@ -1,0 +1,99 @@
+@use '../../../styles/_variables';
+
+.notifications-page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  padding: 20px;
+  background-color: variables.$background-light;
+  overflow-y: auto;
+
+  .notifications-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    h2 {
+      margin: 0;
+      color: variables.$text-primary;
+      font-weight: 600;
+      font-size: 1.5rem;
+    }
+
+    .mark-all-read {
+      background-color: variables.$primary-color;
+      color: variables.$white;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 12px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background-color: variables.$primary-hover;
+      }
+    }
+  }
+
+  .notifications-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+  }
+
+  .notification-item {
+    display: flex;
+    padding: 16px;
+    border-radius: 8px;
+    background-color: variables.$white;
+    box-shadow: variables.$shadow-light;
+    transition: all 0.2s ease;
+    border-left: 4px solid transparent;
+    position: relative;
+    align-items: center;
+
+    &:hover {
+      box-shadow: variables.$shadow-medium;
+      transform: translateY(-2px);
+    }
+
+    &.unread {
+      border-left-color: variables.$primary-color;
+      background-color: rgba(variables.$primary-color, 0.05);
+    }
+
+    &.read {
+      border-left-color: variables.$background-medium;
+    }
+
+    .notification-content {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+
+      p {
+        margin: 0 0 8px 0;
+        color: variables.$text-primary;
+        font-size: 1rem;
+        line-height: 1.4;
+      }
+
+      .notification-time {
+        font-size: 0.85rem;
+        color: variables.$text-secondary;
+      }
+    }
+
+    .unread-indicator {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: variables.$primary-color;
+      margin-left: 12px;
+    }
+  }
+}

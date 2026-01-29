@@ -1,0 +1,103 @@
+### Variables
+@baseUrl = http://localhost:3002/api
+# Update this token after successful login
+@token = your_jwt_token_here
+
+### ===========================================
+### AUTHENTICATION ENDPOINTS
+### ===========================================
+
+### Register New User
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "testuser_{{$randomInt}}",
+  "password": "testpassword123",
+  "displayName": "Test User {{$randomInt}}"
+}
+
+### Expected Response:
+### {
+###   "token": "jwt_token_here",
+###   "user": {
+###     "id": 1,
+###     "username": "testuser",
+###     "display_name": "Test User",
+###     "avatar_url": null
+###   }
+### }
+
+###
+
+### Register User with Validation Errors
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "",
+  "password": "123",
+  "displayName": ""
+}
+
+### Expected Response: 400 Bad Request
+
+###
+
+### Login with Valid Credentials
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "raja",
+  "password": "10062003"
+}
+
+### Expected Response:
+### {
+###   "token": "jwt_token_here",
+###   "user": {
+###     "id": 1,
+###     "username": "raja",
+###     "display_name": "Raja Kumar",
+###     "avatar_url": null
+###   }
+### }
+
+###
+
+### Login with Invalid Credentials
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "nonexistentuser",
+  "password": "wrongpassword"
+}
+
+### Expected Response: 401 Unauthorized
+
+###
+
+### Login with Missing Fields
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "raja"
+}
+
+### Expected Response: 400 Bad Request
+
+###
+
+### Login with Empty Password
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "raja",
+  "password": ""
+}
+
+### Expected Response: 400 Bad Request

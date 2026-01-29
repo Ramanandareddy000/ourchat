@@ -1,0 +1,92 @@
+@use '../../../styles/_variables';
+
+.groups-page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  padding: 20px;
+  background-color: variables.$background-light;
+  overflow-y: auto;
+
+  h2 {
+    margin-bottom: 20px;
+    color: variables.$text-primary;
+    font-weight: 600;
+    font-size: 1.5rem;
+  }
+
+  .groups-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+  }
+
+  .group-item {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    border-radius: 8px;
+    background-color: variables.$white;
+    box-shadow: variables.$shadow-light;
+    transition: all 0.2s ease;
+    cursor: pointer;
+
+    &:hover {
+      box-shadow: variables.$shadow-medium;
+      transform: translateY(-2px);
+    }
+
+    .group-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: variables.$primary-color;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: variables.$white;
+      font-weight: 600;
+      font-size: 1.2rem;
+      margin-right: 15px;
+    }
+
+    .group-info {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+
+      h3 {
+        margin: 0 0 5px 0;
+        color: variables.$text-primary;
+        font-weight: 500;
+        font-size: 1.1rem;
+      }
+
+      p {
+        margin: 0;
+        color: variables.$text-secondary;
+        font-size: 0.9rem;
+      }
+    }
+  }
+
+  .create-group-btn {
+    background-color: variables.$primary-color;
+    color: variables.$white;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-top: 20px;
+    align-self: flex-start;
+
+    &:hover {
+      background-color: variables.$primary-hover;
+    }
+  }
+}

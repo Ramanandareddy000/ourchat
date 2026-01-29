@@ -1,0 +1,35 @@
+@use '../../styles/variables.scss';
+
+.nav-tabs {
+  display: flex;
+  background: variables.$white;
+  border-bottom: 1px solid variables.$border-color;
+  padding: 10px 16px 0 16px; // Add padding to match WhatsApp's layout
+
+  .nav-tab {
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    color: variables.$text-secondary;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+    font-weight: 500;
+    position: relative;
+    border-radius: 16px; // Rounded tabs like WhatsApp
+    margin-right: 8px; // Spacing between tabs
+    margin-bottom: 10px; // Space from bottom border
+
+    &:hover {
+      background: variables.$background-light;
+      color: variables.$primary-color;
+    }
+
+    &.active {
+      color: variables.$white;
+      background: variables.$primary-color; // Use PingMe's purple for active tab
+      
+      // Remove the bottom border indicator and use background color instead
+    }
+  }
+}

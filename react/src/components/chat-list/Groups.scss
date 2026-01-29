@@ -1,0 +1,90 @@
+@use '../../styles/variables.scss';
+
+.groups-list {
+  overflow-y: auto;
+  height: calc(100vh - 180px);
+  flex: 1;
+
+  .group-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px; // Match existing ChatList padding
+    cursor: pointer;
+    border-bottom: 1px solid #f4f1fa; // Light purple tint for subtle separation
+    transition: all 0.3s ease-in-out; // Smooth transitions
+    position: relative;
+
+    &:hover {
+      background: #f4f1fa; // Light purple hover effect
+    }
+
+    &.active {
+      background: #e9e4f5; // More prominent highlight for active item
+    }
+
+    // Remove border-bottom from the last item
+    &:last-child {
+      border-bottom: none;
+    }
+
+    .avatar-container {
+      margin-right: 15px; // Space between avatar and text
+    }
+
+    .group-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 49px; // Match avatar height
+
+      .group-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2px;
+
+        .group-name {
+          color: variables.$text-primary;
+          font-size: 17px;
+          font-weight: 500; // Medium font weight for group names
+          flex: 1;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .last-message-time {
+          color: variables.$text-secondary;
+          font-size: 12px; // Smaller time text
+        }
+      }
+
+      .group-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .last-message {
+          color: variables.$text-secondary;
+          font-size: 14px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          flex: 1;
+          margin-right: 5px;
+        }
+
+        .group-icons {
+          display: flex;
+          gap: 4px;
+          
+          .muted-icon, .pinned-icon {
+            font-size: 14px;
+            color: variables.$text-secondary;
+          }
+        }
+      }
+    }
+  }
+}
